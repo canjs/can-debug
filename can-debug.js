@@ -2,6 +2,9 @@ var namespace = require('can-namespace');
 var canSymbol = require('can-symbol');
 var canReflect = require('can-reflect');
 
+var getKeyDependenciesSymbol = canSymbol.for('can.getKeyDependencies');
+var getValueDependenciesSymbol = canSymbol.for('can.getValueDependencies');
+
 function debug(obj, key) {
 	// key can be 0, maybe undefined
 	var gotKey = arguments.length === 2;
@@ -45,7 +48,7 @@ debug.logWhatChangesMe = function(obj, key) {
 	};
 
 	var log = function log(data) {
-		var nameParts = [ data.name, data.key != null ? ('.' + data.key) : ''];
+		var nameParts = [data.name, data.key != null ? ('.' + data.key) : ''];
 
 		console.group(nameParts.join(''));
 		console.log('value  ', quoteString(data.value));
@@ -59,16 +62,12 @@ debug.logWhatChangesMe = function(obj, key) {
 };
 
 function getKeyDependencies(obj, key) {
-	var getKeyDependenciesSymbol = canSymbol.for('can.getKeyDependencies');
-
 	if (obj[getKeyDependenciesSymbol]) {
 		return canReflect.getKeyDependencies(obj, key);
 	}
 }
 
 function getValueDependencies(obj) {
-	var getValueDependenciesSymbol = canSymbol.for('can.getValueDependencies');
-
 	if (obj[getValueDependenciesSymbol]) {
 		return canReflect.getValueDependencies(obj);
 	}

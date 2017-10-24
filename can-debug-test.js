@@ -17,11 +17,8 @@ QUnit.test('basics', function(assert) {
 	});
 	fullName.start();
 
-	var debugData = debug(fullName);
-	console.log(debugData);
-
 	assert.expect(1);
-	assert.deepEqual(debugData, {
+	assert.deepEqual(debug(fullName), {
 		key: undefined,
 		obj: fullName,
 		name: 'Observation<>',
@@ -57,7 +54,7 @@ QUnit.test('works with can-define-map', function(assert) {
 		},
 		ocupation: {
 			get: function() {
-				return `${this.fullName} - ${this.job}`;
+				return this.fullName + ' - ' + this.job;
 			}
 		}
 	});
@@ -110,7 +107,7 @@ QUnit.test('it works', function(assert) {
 		},
 		ocupation: {
 			get: function() {
-				return `${this.fullName} - ${this.job}`;
+				return this.fullName + ' - ' + this.job;
 			}
 		}
 	});
