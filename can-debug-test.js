@@ -1,12 +1,16 @@
 var QUnit = require('steal-qunit');
 var debug = require('./can-debug');
+var canReflect = require('can-reflect');
 var Observation = require('can-observation');
 var DefineMap = require('can-define/map/map');
 var SimpleObservable = require('can-simple-observable');
+var SettableObservable = require('can-simple-observable/settable/settable');
 
 QUnit.module('can-debug');
 
-QUnit.test('basics', function(assert) {
+var noop = function noop() {};
+
+QUnit.test('it works with can-observation', function(assert) {
 	var first = new SimpleObservable('John');
 	var last = new SimpleObservable('Doe');
 
@@ -78,19 +82,48 @@ QUnit.test('works with can-define-map', function(assert) {
 	};
 
 	var me = new Person({ first: 'John', last: 'Doe' });
-	me.on('ocupation', function() {});
+	me.on('ocupation', noop);
 
 	var keys = collectFrom('key', debug(me, 'ocupation'));
 	assert.deepEqual(
 		keys.filter(function(key) { return Boolean(key); }),
-		[
-			'ocupation',
-			'job',
-			'first',
-			'last',
-		],
+		['ocupation', 'job', 'first', 'last'],
 		'gets all key dependencies from the given property'
 	);
+});
+
+QUnit.test('works with can-simple-observable/settable', function(assert) {
+	var value = new SimpleObservable(2);
+
+	var obs = new SettableObservable(function(lastSet) {
+		return lastSet * value.get();
+	}, null, 1);
+
+	canReflect.onValue(obs, noop);
+
+	assert.expect(1);
+	assert.deepEqual(debug(obs), {
+		key: undefined,
+		obj: obs,
+		name: 'SettableObservable<>',
+		value: 2,
+		keyDependencies: {},
+		valueDependencies: [{
+			key: undefined,
+			obj: obs.lastSetValue,
+			name: 'SimpleObservable<1>',
+			value: 1,
+			keyDependencies: {},
+			valueDependencies: []
+		}, {
+			key: undefined,
+			obj: value,
+			name: 'SimpleObservable<2>',
+			value: 2,
+			keyDependencies: {},
+			valueDependencies: []
+		}]
+	});
 });
 
 QUnit.module('logWhatChangesMe');
