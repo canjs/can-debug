@@ -6,7 +6,7 @@ var getKeyDependenciesSymbol = canSymbol.for('can.getKeyDependencies');
 var getValueDependenciesSymbol = canSymbol.for('can.getValueDependencies');
 
 function debug(obj, key) {
-	// key can be 0, maybe undefined
+	// key can be 0, an empty string, maybe undefined.
 	var gotKey = arguments.length === 2;
 
 	var data = {
@@ -43,6 +43,9 @@ function debug(obj, key) {
 }
 
 debug.logWhatChangesMe = function(obj, key) {
+	// key can be 0, an empty string, maybe undefined.
+	var gotKey = arguments.length === 2;
+
 	var quoteString = function(x) {
 		return typeof x === 'string' ? JSON.stringify(x) : x;
 	};
@@ -58,7 +61,7 @@ debug.logWhatChangesMe = function(obj, key) {
 		console.groupEnd();
 	};
 
-	log(debug(obj, key));
+	return gotKey ? log(debug(obj, key)) : log(debug(obj));
 };
 
 function getKeyDependencies(obj, key) {
