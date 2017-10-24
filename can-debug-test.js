@@ -1,5 +1,6 @@
 var QUnit = require('steal-qunit');
 var debug = require('./can-debug');
+var Scope = require('can-view-scope');
 var canReflect = require('can-reflect');
 var Observation = require('can-observation');
 var DefineMap = require('can-define/map/map');
@@ -10,7 +11,25 @@ QUnit.module('can-debug');
 
 var noop = function noop() {};
 
-QUnit.test('it works with can-observation', function(assert) {
+// recursively collect [prop] from the result of calling `debug`
+var collectFrom = function(prop, tree) {
+	var result = [];
+
+	var collect = function collect(tree) {
+		result.push(tree[prop]);
+		for (var key in tree.keyDependencies) {
+			collect(tree.keyDependencies[key]);
+		}
+		tree.valueDependencies.forEach(function(data) {
+			collect(data);
+		});
+	};
+
+	collect(tree);
+	return result;
+};
+
+QUnit.test('works with can-observation', function(assert) {
 	var first = new SimpleObservable('John');
 	var last = new SimpleObservable('Doe');
 
@@ -63,24 +82,6 @@ QUnit.test('works with can-define-map', function(assert) {
 		}
 	});
 
-	// recursively collect [prop] from the result of calling `debug`
-	var collectFrom = function(prop, tree) {
-		var result = [];
-
-		var collect = function collect(tree) {
-			result.push(tree[prop]);
-			for (var key in tree.keyDependencies) {
-				collect(tree.keyDependencies[key]);
-			}
-			tree.valueDependencies.forEach(function(data) {
-				collect(data);
-			});
-		};
-
-		collect(tree);
-		return result;
-	};
-
 	var me = new Person({ first: 'John', last: 'Doe' });
 	me.on('ocupation', noop);
 
@@ -124,6 +125,32 @@ QUnit.test('works with can-simple-observable/settable', function(assert) {
 			valueDependencies: []
 		}]
 	});
+});
+
+QUnit.test('works with can-view-scope/compute-data', function(assert) {
+	var Person = DefineMap.extend('Person', {
+		first: 'string',
+		last: 'string',
+		fullName: {
+			get: function() {
+				return this.first + ' ' + this.last;
+			}
+		}
+	});
+
+	var map = new Person({ first: 'John', last: 'Doe' });
+	var scope = new Scope(map);
+	var computeData = scope.computeData('fullName');
+	computeData.compute.bind('change', noop);
+
+	assert.expect(1);
+	assert.deepEqual(collectFrom('name', debug(computeData)), [
+		'ScopeKeyData{{fullName}}',
+		'Observation<{{fullName}}::ScopeKeyData.read>',
+		'Observation<Person{}\'s fullName getter>',
+		'Person{}', // first
+		'Person{}'  // last
+	]);
 });
 
 QUnit.module('logWhatChangesMe');
