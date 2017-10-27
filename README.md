@@ -1,6 +1,6 @@
 # can-debug
 
-[![Build Status](https://travis-ci.org/Bitovi/can-debug.svg?branch=master)](https://travis-ci.org/Bitovi/can-debug)
+[![Build Status](https://travis-ci.org/canjs/can-debug.svg?branch=master)](https://travis-ci.org/canjs/can-debug)
 
 CanJS Debugger
 
