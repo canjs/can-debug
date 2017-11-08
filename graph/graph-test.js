@@ -1,0 +1,62 @@
+var QUnit = require('steal-qunit');
+var Graph = require('can-debug/graph/graph');
+
+QUnit.module('Graph');
+
+QUnit.test('addNode', function(assert) {
+	var g = new Graph();
+	var one = '1';
+
+	g.addNode(one);
+
+	assert.ok(g.findNode(function(node) {
+		return node === one;
+	}));
+});
+
+QUnit.test('addArrow', function(assert) {
+	var g = new Graph();
+	var one = '1';
+	var two = '2';
+
+	g.addNode(one);
+	g.addNode(two);
+	g.addArrow(one, two);
+
+	assert.ok(g.hasArrow(one, two));
+});
+
+QUnit.test('getArrowMeta', function(assert) {
+	var g = new Graph();
+	var one = '1';
+	var two = '2';
+	var meta = { type: 'twoWay' };
+
+	g.addNode(one);
+	g.addNode(two);
+	g.addArrow(one, two, meta);
+
+	assert.equal(g.getArrowMeta(one, two), meta);
+});
+
+QUnit.test('getNeighbors', function(assert) {
+	var g = new Graph();
+	var one = '1';
+	var two = '2';
+	var three = '3';
+
+	g.addNode(one);
+	g.addNode(two);
+	g.addNode(three);
+
+	// 1 -> 2 -> 3
+	// 1 -> 3
+	g.addArrow(one, two);
+	g.addArrow(one, three);
+	g.addArrow(two, three);
+
+	assert.deepEqual(g.getNeighbors(one), new Set([two, three]));
+	assert.deepEqual(g.getNeighbors(two), new Set([three]));
+	assert.deepEqual(g.getNeighbors(three), new Set());
+});
+
