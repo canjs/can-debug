@@ -35,6 +35,12 @@ Graph.prototype.getArrowMeta = function getArrowMeta(head, tail) {
 	return this.arrowsMeta.get(head).get(tail);
 };
 
+// Sets metadata about the arrow from head to tail
+// Merges the passed object into existing metadata
+Graph.prototype.setArrowMeta = function setArrowMeta(head, tail, meta) {
+	addArrowMeta(this, head, tail, meta);
+};
+
 // Returns a Set of all nodes 'y' such that there is an arrow
 // from the node 'x' to the node 'y'.
 Graph.prototype.getNeighbors = function getNeighbors(node) {
@@ -114,7 +120,7 @@ Graph.prototype.labelCycles = function labelCycles(cb) {
 	});
 
 	var visit = function visit(node) {
-    visited.set(node, true);
+		visited.set(node, true);
 
 		graph.arrows.get(node).forEach(function(adj) {
 			// back edge found
@@ -134,10 +140,10 @@ Graph.prototype.labelCycles = function labelCycles(cb) {
 	};
 
 	graph.nodes.forEach(function(node) {
-    if (!visited.has(node)) {
-      visit(node);
-    }
-  });
+		if (!visited.has(node)) {
+			visit(node);
+		}
+	});
 
 	return result;
 };
@@ -153,7 +159,7 @@ function addArrowMeta(graph, head, tail, meta) {
 		}
 		entry.set(tail, Object.assign(arrowMeta, meta));
 	} else {
-		entry = new Map([ [tail, meta] ]);
+		entry = new Map([[tail, meta]]);
 		graph.arrowsMeta.set(head, entry);
 	}
 }
