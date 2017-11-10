@@ -1,58 +1,9 @@
 var QUnit = require("steal-qunit");
 var getGraph = require("./get-graph");
-var normalizeArguments = require("./normalize-arguments");
 
 var stache = require("can-stache");
 var DefineMap = require("can-define/map/map");
 require("can-stache-bindings");
-
-QUnit.module("normalizeArguments");
-
-QUnit.test("with no arguments", function(assert) {
-	assert.throws(function() {
-		normalizeArguments();
-	}, /Incorrect number of arguments/);
-});
-
-QUnit.test("with 1 argument", function(assert) {
-	var obj = {};
-	var args = normalizeArguments(obj);
-
-	assert.ok(!("key" in args), "key was not passed in");
-	assert.equal(args.obj, obj);
-	assert.ok(args.options.withCycles, "default option should be returned");
-});
-
-QUnit.test("with 2 arguments but no options", function(assert) {
-	var obj = {};
-	var key = "fullName";
-	var args = normalizeArguments(obj, key);
-
-	assert.equal(args.key, key);
-	assert.equal(args.obj, obj);
-	assert.ok(args.options.withCycles, "default option should be returned");
-});
-
-QUnit.test("with 2 arguments but no key", function(assert) {
-	var obj = {};
-	var options = { withCycles: false };
-	var args = normalizeArguments(obj, options);
-
-	assert.equal(args.obj, obj);
-	assert.equal(args.options, options);
-	assert.ok(!("key" in args), "key was not passed in");
-});
-
-QUnit.test("with 3 arguments", function(assert) {
-	var obj = {};
-	var key = "fullName";
-	var options = { withCycles: false };
-	var args = normalizeArguments(obj, key, options);
-
-	assert.equal(args.obj, obj);
-	assert.equal(args.key, key);
-	assert.equal(args.options, options);
-});
 
 QUnit.module("getGraph");
 

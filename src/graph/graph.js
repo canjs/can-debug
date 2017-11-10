@@ -105,49 +105,6 @@ Graph.prototype.dfs = function dfs(visit) {
 	}
 };
 
-// Returns a new graph with all the arrows not involved in a circuit
-// Calls `cb` when a back edge is found so the caller can choose what
-// do to with it
-Graph.prototype.labelCycles = function labelCycles(cb) {
-	var visited = new Map();
-
-	var graph = this;
-	var result = new Graph();
-
-	// copy over all nodes
-	graph.nodes.forEach(function(node) {
-		result.addNode(node);
-	});
-
-	var visit = function visit(node) {
-		visited.set(node, true);
-
-		graph.arrows.get(node).forEach(function(adj) {
-			// back edge found
-			if (visited.has(adj)) {
-				cb(result, node, adj);
-			} else {
-				// copy over the arrow from node to adj
-				result.addArrow(node, adj);
-
-				// copy over the path metadata
-				var arrowMeta = graph.arrowsMeta.get(node).get(adj);
-				addArrowMeta(result, node, adj, arrowMeta);
-
-				visit(adj);
-			}
-		});
-	};
-
-	graph.nodes.forEach(function(node) {
-		if (!visited.has(node)) {
-			visit(node);
-		}
-	});
-
-	return result;
-};
-
 // Returns a new graph where the arrows point to the opposite direction, that is:
 // For each arrow (u, v) in [this], there will be a (v, u) in the returned graph
 // This is also called Transpose or Converse a graph

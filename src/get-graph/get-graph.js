@@ -1,26 +1,17 @@
 var Graph = require("../graph/graph");
 var makeNode = require("./make-node");
 var canReflect = require("can-reflect");
-var normalizeArguments = require("./normalize-arguments");
 var mutateDeps = require("can-reflect-mutate-dependencies");
 
 // Returns a directed graph of the dependencies of obj (key is optional)
 //
-// Set options.withCycles to false to remove cycles from the graph, it will
-// set the arrow meta.kind to 'twoWayDependencies'.
-//
 // Signature:
 //	getDirectedGraph(obj)
 //	getDirectedGraph(obj, key)
-//	getDirectedGraph(obj, options)
-//	getDirectedGraph(ob, key, options)
-module.exports = function getGraph(obj, key, options) {
+module.exports = function getGraph(obj, key) {
 	var order = 0;
 	var graph = new Graph();
-
-	var args = normalizeArguments.apply(null, arguments);
-	options = args.options;
-	var withCycles = options.withCycles == null ? true : options.withCycles;
+	var gotKey = arguments.length === 2;
 
 	function visit(obj, key, meta) {
 		// key can be 0, an empty string, maybe undefined.
@@ -41,22 +32,8 @@ module.exports = function getGraph(obj, key, options) {
 		});
 
 		if (node) {
-			// back edge found
 			if (meta.head) {
-				if (withCycles) {
-					graph.addArrow(meta.head, node, { kind: meta.kind });
-				} else {
-					var isTwoWay = graph.hasArrow(node, meta.head);
-
-					// if isTwoWay is false it means the cycle involves more than 2 nodes,
-					// e.g: A -> B -> C -> A
-					// what to do in these cases? (currently ignoring these)
-					if (isTwoWay) {
-						graph.setArrowMeta(node, meta.head, {
-							kind: "twoWayDependencies"
-						});
-					}
-				}
+				graph.addArrow(meta.head, node, { kind: meta.kind });
 			}
 			// prevent infinite recursion
 			return graph;
@@ -118,5 +95,5 @@ module.exports = function getGraph(obj, key, options) {
 		return graph;
 	}
 
-	return "key" in args ? visit(obj, key, {}) : visit(obj);
+	return gotKey ? visit(obj, key, {}) : visit(obj);
 };

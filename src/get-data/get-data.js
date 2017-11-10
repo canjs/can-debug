@@ -1,16 +1,19 @@
+var labelCycles = require("../label-cycles/label-cycles");
+
 // Returns a deeply nested object from the graph
-module.exports = function getDebugData(graph) {
+module.exports = function getDebugData(inputGraph) {
 	var visited = new Map();
+	var graph = labelCycles(inputGraph);
 
 	var visit = function visit(node) {
 		var data = { node: node, dependencies: [], mutations: [], twoWay: [] };
+
+		visited.set(node, true);
 
 		graph.getNeighbors(node).forEach(function(adj) {
 			var meta = graph.getArrowMeta(node, adj);
 
 			if (!visited.has(adj) && meta) {
-				visited.set(adj, true);
-
 				switch (meta.kind) {
 					case "twoWayDependencies":
 						data.twoWay.push(visit(adj));

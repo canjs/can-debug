@@ -43,7 +43,7 @@ QUnit.test("works with can-observation", function(assert) {
 	fullName.start();
 
 	assert.expect(1);
-	assert.deepEqual(getData(getGraph(fullName, { withCycles: false })), {
+	assert.deepEqual(getData(getGraph(fullName)), {
 		node: {
 			order: 1,
 			obj: fullName,
@@ -101,7 +101,7 @@ QUnit.test("works with can-define-map", function(assert) {
 
 	var keys = collectFrom(
 		"key",
-		getData(getGraph(me, "ocupation", { withCycles: false }))
+		getData(getGraph(me, "ocupation"))
 	);
 	assert.deepEqual(
 		keys.filter(function(key) {
@@ -126,7 +126,7 @@ QUnit.test("works with can-simple-observable/settable", function(assert) {
 	canReflect.onValue(obs, noop);
 
 	assert.expect(1);
-	assert.deepEqual(getData(getGraph(obs, { withCycles: false })), {
+	assert.deepEqual(getData(getGraph(obs)), {
 		node: {
 			order: 1,
 			obj: obs,
@@ -180,7 +180,7 @@ QUnit.test("works with can-view-scope/compute-data", function(assert) {
 
 	assert.expect(2);
 
-	var data = getData(getGraph(computeData, { withCycles: false }));
+	var data = getData(getGraph(computeData));
 	assert.ok(data.twoWay.length, "has two way dependencies");
 
 	var twoWayDep = {
@@ -210,7 +210,7 @@ QUnit.test("works with can-stache lookup expressions", function(assert) {
 	document.body.appendChild(view(viewModel));
 
 	var fullNameNode = document.querySelector(".full-name");
-	var data = getData(getGraph(fullNameNode, { withCycles: false }));
+	var data = getData(getGraph(fullNameNode));
 
 	assert.expect(1);
 	assert.ok(
@@ -230,7 +230,7 @@ QUnit.test("works with can-stache attrs", function(assert) {
 	document.body.appendChild(view(viewModel));
 
 	var divNode = document.querySelector("#attr");
-	var data = getData(getGraph(divNode, { withCycles: false }));
+	var data = getData(getGraph(divNode));
 
 	assert.expect(1);
 	assert.ok(
@@ -252,7 +252,7 @@ QUnit.test("works with can-stache lists", function(assert) {
 	document.body.appendChild(view(viewModel));
 
 	var listNode = document.querySelector(".list");
-	var data = getData(getGraph(listNode, { withCycles: false }));
+	var data = getData(getGraph(listNode));
 
 	assert.expect(1);
 	assert.ok(
