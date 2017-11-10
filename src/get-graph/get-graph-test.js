@@ -1,49 +1,94 @@
 var QUnit = require("steal-qunit");
+var canSymbol = require("can-symbol");
 var getGraph = require("./get-graph");
-
-var stache = require("can-stache");
-var DefineMap = require("can-define/map/map");
-require("can-stache-bindings");
+var mutateDeps = require("can-reflect-mutate-dependencies");
+var getValueDependenciesSymbol = canSymbol.for("can.getValueDependencies");
 
 QUnit.module("getGraph");
 
-QUnit.test("works with can-stache bindings", function(assert) {
-	var ViewModel = DefineMap.extend("PersonVM", {
-		first: "string",
-		last: "string",
-		fullName: {
-			get: function() {
-				return this.first + " " + this.last;
-			}
-		}
-	});
+QUnit.test("works with acyclic dependencies", function(assert) {
+	var obs = {};
+	var obs2 = {};
+	var obs3 = {};
 
-	var tpl = [
-		'<h1 id="full">{{fullName}}</h1>',
-		'<input id="first" value:bind="first">',
-		'<input id="last" value:bind="last">'
+	obs[getValueDependenciesSymbol] = function() {
+		return {
+			valueDependencies: new Set([ obs2 ])
+		};
+	};
+
+	obs2[getValueDependenciesSymbol] = function() {
+		return {
+			keyDependencies: new Map([
+				[obs3, new Set(["fullName"])]
+			])
+		};
+	};
+
+	var order = 0;
+	var head = null;
+	var expected = [
+		{ obj: obs },
+		{ obj: obs2, kind: "valueDependencies" },
+		{ obj: obs3, kind: "keyDependencies" }
 	];
 
-	var view = stache(tpl.join(""));
-	var viewModel = new ViewModel({ first: "Jane", last: "Doe" });
-	document.body.appendChild(view(viewModel));
+	var graph = getGraph(obs);
 
-	var fullNameEl = document.querySelector("#full");
-	var firstNameEl = document.querySelector("#first");
-	var lastNameEl = document.querySelector("#last");
+	graph.dfs(function(node) {
+		assert.equal(node.obj, expected[order].obj);
 
-	var graph = getGraph(fullNameEl);
-	var firstNameNode = graph.findNode(function(node) {
-		return node.obj === firstNameEl;
+		if (head) {
+			var meta = graph.getArrowMeta(head, node);
+			assert.equal(expected[order].kind, meta.kind);
+		}
+
+		head = node;
+		order += 1;
 	});
-	var lastNameNode = graph.findNode(function(node) {
-		return node.obj === lastNameEl;
-	});
+});
 
-	assert.expect(2);
-	assert.ok(firstNameNode, "first name input should be in dependency graph");
-	assert.ok(lastNameNode, "last name input should be in dependency graph");
-	fullNameEl.remove();
-	firstNameEl.remove();
-	lastNameEl.remove();
+QUnit.test("works with two way dependencies", function(assert) {
+	var obs = {};
+	var obs2 = {};
+	var obs3 = {};
+
+	obs[getValueDependenciesSymbol] = function() {
+		return {
+			valueDependencies: new Set([ obs2 ])
+		};
+	};
+
+	obs2[getValueDependenciesSymbol] = function() {
+		return {
+			keyDependencies: new Map([
+				[obs3, new Set(["fullName"])]
+			])
+		};
+	};
+
+	mutateDeps.addMutatedBy(obs3, "fullName", obs);
+
+	var order = 0;
+	var head = null;
+	var expected = [
+		{ obj: obs },
+		{ obj: obs2, kind: "valueDependencies" },
+		{ obj: obs3, kind: "keyDependencies" },
+		{ obj: obs, kind: "mutatedValueDependencies" }
+	];
+
+	var graph = getGraph(obs);
+
+	graph.dfs(function(node) {
+		assert.equal(node.obj, expected[order].obj);
+
+		if (head) {
+			var meta = graph.getArrowMeta(head, node);
+			assert.equal(expected[order].kind, meta.kind);
+		}
+
+		head = node;
+		order += 1;
+	});
 });
