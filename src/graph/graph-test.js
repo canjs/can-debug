@@ -75,3 +75,30 @@ QUnit.test("getNeighbors", function(assert) {
 	assert.deepEqual(g.getNeighbors(two), new Set([three]));
 	assert.deepEqual(g.getNeighbors(three), new Set());
 });
+
+QUnit.test("reverse", function(assert) {
+	var one = "1";
+	var two = "2";
+	var three = "3";
+
+	var g = new Graph();
+	g.addNode(one);
+	g.addNode(two);
+	g.addNode(three);
+
+	// 1 -> 2 -> 3
+	// 1 -> 3
+	g.addArrow(one, two);
+	g.addArrow(one, three);
+	g.addArrow(two, three);
+
+	var r = g.reverse();
+	assert.ok(r.hasArrow(two, one));
+	assert.ok(!r.hasArrow(one, two));
+
+	assert.ok(r.hasArrow(three, one));
+	assert.ok(!r.hasArrow(one, three));
+
+	assert.ok(r.hasArrow(three, two));
+	assert.ok(!r.hasArrow(two, three));
+});

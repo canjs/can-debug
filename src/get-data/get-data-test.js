@@ -1,5 +1,6 @@
 var QUnit = require("steal-qunit");
 var getData = require("./get-data");
+var getGraph = require("../get-graph/get-graph");
 
 var stache = require("can-stache");
 var Scope = require("can-view-scope");
@@ -42,7 +43,7 @@ QUnit.test("works with can-observation", function(assert) {
 	fullName.start();
 
 	assert.expect(1);
-	assert.deepEqual(getData(fullName), {
+	assert.deepEqual(getData(getGraph(fullName, { withCycles: false })), {
 		node: {
 			order: 1,
 			obj: fullName,
@@ -98,7 +99,10 @@ QUnit.test("works with can-define-map", function(assert) {
 	var me = new Person({ first: "John", last: "Doe" });
 	me.on("ocupation", noop);
 
-	var keys = collectFrom("key", getData(me, "ocupation"));
+	var keys = collectFrom(
+		"key",
+		getData(getGraph(me, "ocupation", { withCycles: false }))
+	);
 	assert.deepEqual(
 		keys.filter(function(key) {
 			return Boolean(key);
@@ -122,7 +126,7 @@ QUnit.test("works with can-simple-observable/settable", function(assert) {
 	canReflect.onValue(obs, noop);
 
 	assert.expect(1);
-	assert.deepEqual(getData(obs), {
+	assert.deepEqual(getData(getGraph(obs, { withCycles: false })), {
 		node: {
 			order: 1,
 			obj: obs,
@@ -176,7 +180,7 @@ QUnit.test("works with can-view-scope/compute-data", function(assert) {
 
 	assert.expect(2);
 
-	var data = getData(computeData);
+	var data = getData(getGraph(computeData, { withCycles: false }));
 	assert.ok(data.twoWay.length, "has two way dependencies");
 
 	var twoWayDep = {
@@ -206,7 +210,7 @@ QUnit.test("works with can-stache lookup expressions", function(assert) {
 	document.body.appendChild(view(viewModel));
 
 	var fullNameNode = document.querySelector(".full-name");
-	var data = getData(fullNameNode);
+	var data = getData(getGraph(fullNameNode, { withCycles: false }));
 
 	assert.expect(1);
 	assert.ok(
@@ -226,7 +230,7 @@ QUnit.test("works with can-stache attrs", function(assert) {
 	document.body.appendChild(view(viewModel));
 
 	var divNode = document.querySelector("#attr");
-	var data = getData(divNode);
+	var data = getData(getGraph(divNode, { withCycles: false }));
 
 	assert.expect(1);
 	assert.ok(
@@ -248,7 +252,7 @@ QUnit.test("works with can-stache lists", function(assert) {
 	document.body.appendChild(view(viewModel));
 
 	var listNode = document.querySelector(".list");
-	var data = getData(listNode);
+	var data = getData(getGraph(listNode, { withCycles: false }));
 
 	assert.expect(1);
 	assert.ok(

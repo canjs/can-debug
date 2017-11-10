@@ -1,13 +1,6 @@
-var getGraph = require("../get-graph/get-graph");
-
-// Returns a deeply nested object with the dependencies of obj (key?)
-module.exports = function getDebugData(obj, key) {
+// Returns a deeply nested object from the graph
+module.exports = function getDebugData(graph) {
 	var visited = new Map();
-	var gotKey = arguments.length === 2;
-
-	var graph = gotKey ?
-		getGraph(obj, key, { withCycles: false }) :
-		getGraph(obj, { withCycles: false });
 
 	var visit = function visit(node) {
 		var data = { node: node, dependencies: [], mutations: [], twoWay: [] };

@@ -32,7 +32,7 @@ Graph.prototype.hasArrow = function hasArrow(head, tail) {
 
 // Returns the metadata associated to the head -> tail arrow
 Graph.prototype.getArrowMeta = function getArrowMeta(head, tail) {
-	return this.arrowsMeta.get(head).get(tail);
+	return this.arrowsMeta.get(head) && this.arrowsMeta.get(head).get(tail);
 };
 
 // Sets metadata about the arrow from head to tail
@@ -146,6 +146,27 @@ Graph.prototype.labelCycles = function labelCycles(cb) {
 	});
 
 	return result;
+};
+
+// Returns a new graph where the arrows point to the opposite direction, that is:
+// For each arrow (u, v) in [this], there will be a (v, u) in the returned graph
+// This is also called Transpose or Converse a graph
+Graph.prototype.reverse = function reverse() {
+	var graph = this;
+	var reversed = new Graph();
+
+	// copy over the nodes
+	graph.nodes.forEach(reversed.addNode.bind(reversed));
+
+	graph.nodes.forEach(function(node) {
+		graph.getNeighbors(node).forEach(function(adj) {
+			// add the arrow in the opposite direction, copy over metadata
+			var meta = graph.getArrowMeta(node, adj);
+			reversed.addArrow(adj, node, meta);
+		});
+	});
+
+	return reversed;
 };
 
 // Helpers
