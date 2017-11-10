@@ -28,7 +28,7 @@ document.querySelector("#slot").appendChild(view(scope));
 
 draw(
 	document.querySelector("#container"),
-	debug.getDirectedGraph(document.querySelector("#full"))
+	debug.getGraph(document.querySelector("#full"))
 );
 
 debug.logWhatChangesMe(document.querySelector("#full"));
