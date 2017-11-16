@@ -127,7 +127,7 @@ QUnit.test('works with can-simple-observable/settable', function(assert) {
 	});
 });
 
-QUnit.test('works with can-view-scope/compute-data', function(assert) {
+QUnit.skip('works with can-view-scope/compute-data', function(assert) {
 	var Person = DefineMap.extend('Person', {
 		first: 'string',
 		last: 'string',
