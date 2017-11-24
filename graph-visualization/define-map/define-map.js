@@ -2,7 +2,7 @@ var debug = require("can-debug/can-debug");
 var draw = require("can-debug/graph-visualization/draw");
 
 var DefineMap = require("can-define/map/map");
-var mutateDeps = require("can-reflect-mutate-dependencies");
+var mutateDeps = require("can-reflect-dependencies");
 
 var Person = DefineMap.extend({
 	first: "string",
