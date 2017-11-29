@@ -24,6 +24,7 @@ var view = stache(`
 var scope = new Person({ first: "Jane", last: "Doe" });
 
 document.querySelector("#slot").appendChild(view(scope));
+debug.logWhatIChange(document.querySelector("#first"), "value");
 draw(
 	document.querySelector("#container"),
 	debug.getGraph(document.querySelector("#full"))
