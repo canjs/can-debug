@@ -1,8 +1,6 @@
 var debug = require("can-debug/can-debug");
-var draw = require("can-debug/graph-visualization/draw");
-
 var DefineMap = require("can-define/map/map");
-var mutateDeps = require("can-reflect-dependencies");
+var draw = require("can-debug/graph-visualization/draw");
 
 var Person = DefineMap.extend({
 	first: "string",
@@ -23,7 +21,7 @@ var Person = DefineMap.extend({
 var me = new Person({ first: "John", last: "Doe" });
 me.on("ocupation", function() {});
 
-console.log(mutateDeps.getDependencyDataOf(me, "ocupation"));
+debug.logWhatChangesMe(me, "ocupation");
 draw(
 	document.querySelector("#container"),
 	debug.getGraph(me, "ocupation")

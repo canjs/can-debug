@@ -11,11 +11,10 @@ var isDisconnected = function isDisconnected(data) {
 // Returns a deeply nested object from the graph
 module.exports = function getDebugData(inputGraph, direction) {
 	var visited = new Map();
-	var graph = labelCycles(inputGraph);
 
-	var isWantedDirection = function isWantedDirection(meta) {
-		return direction == null || direction === meta.direction;
-	};
+	var graph = labelCycles(
+		direction === "whatChangesMe" ? inputGraph.reverse() : inputGraph
+	);
 
 	var visit = function visit(node) {
 		var data = { node: node, dependencies: [], mutations: [], twoWay: [] };
@@ -25,7 +24,7 @@ module.exports = function getDebugData(inputGraph, direction) {
 		graph.getNeighbors(node).forEach(function(adj) {
 			var meta = graph.getArrowMeta(node, adj);
 
-			if (!visited.has(adj) && (meta && isWantedDirection(meta))) {
+			if (!visited.has(adj)) {
 				switch (meta.kind) {
 					case "twoWay":
 						data.twoWay.push(visit(adj));

@@ -4,7 +4,7 @@ var Graph = require("../graph/graph");
 
 QUnit.module("getData");
 
-QUnit.test("works with acyclic graphs (whatIChange)", function(assert) {
+QUnit.test("outcoming arrows - whatIChange data", function(assert) {
 	var one = "1";
 	var two = "2";
 	var three = "3";
@@ -14,10 +14,11 @@ QUnit.test("works with acyclic graphs (whatIChange)", function(assert) {
 	g.addNode(two);
 	g.addNode(three);
 
-	// 1 -> 2
-	// 1 -> 3
-	g.addArrow(one, two, { kind: "derive", direction: "whatIChange" });
-	g.addArrow(one, three, { kind: "derive", direction: "whatIChange" });
+	// root: 1
+	// 1 changes 2
+	// 1 changes 3
+	g.addArrow(one, two, { kind: "derive" });
+	g.addArrow(one, three, { kind: "derive" });
 
 	assert.deepEqual(getData(g, "whatIChange"), {
 		node: one,
@@ -40,7 +41,7 @@ QUnit.test("works with acyclic graphs (whatIChange)", function(assert) {
 	});
 });
 
-QUnit.test("works with acyclic graphs (whatChangesMe)", function(assert) {
+QUnit.test("no incoming arrows - whatChangesMe data is empty", function(assert) {
 	var one = "1";
 	var two = "2";
 	var three = "3";
@@ -50,15 +51,13 @@ QUnit.test("works with acyclic graphs (whatChangesMe)", function(assert) {
 	g.addNode(two);
 	g.addNode(three);
 
-	// 1 -> 2
-	// 1 -> 3
-	g.addArrow(one, two, { kind: "derive", direction: "whatIChange" });
-	g.addArrow(one, three, { kind: "derive", direction: "whatIChange" });
+	// root: 1
+	// 1 changes 2
+	// 1 changes 3
+	g.addArrow(one, two, { kind: "mutate" });
+	g.addArrow(one, three, { kind: "mutate" });
 
-	assert.ok(
-		getData(g, "whatChangesMe") == null,
-		"there are no arrows in the indicated direction"
-	);
+	assert.equal(getData(g, "whatChangesMe"), null, "1 has no incoming arrows");
 });
 
 QUnit.test("works with acyclic graphs (any direction)", function(assert) {
@@ -71,10 +70,11 @@ QUnit.test("works with acyclic graphs (any direction)", function(assert) {
 	g.addNode(two);
 	g.addNode(three);
 
+	// root: 1
 	// 1 -> 2
 	// 1 -> 3
-	g.addArrow(one, two, { kind: "derive", direction: "whatIChange" });
-	g.addArrow(one, three, { kind: "derive", direction: "whatIChange" });
+	g.addArrow(one, two, { kind: "derive" });
+	g.addArrow(one, three, { kind: "derive" });
 
 	assert.deepEqual(getData(g), {
 		node: one,
@@ -107,6 +107,7 @@ QUnit.test("works with graphs including cycles", function(assert) {
 	g.addNode(two);
 	g.addNode(three);
 
+	// root: 1
 	// 1 -> 2 <-> 3
 	g.addArrow(one, two, { kind: "derive" });
 	g.addArrow(two, three, { kind: "derive" });
