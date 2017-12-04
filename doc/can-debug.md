@@ -60,9 +60,11 @@ a better understanding of what each means:
 
 ![logWhatChangesMe output](../node_modules/can-debug/doc/what-changes-me-top.png)
 
-Each observable will be contained in a console group, this group will be labeled
-using a pretty name (blue border box), in most cases the constructor name decorated 
-with some metadata. Inside the group, the following properties are printed out:
+Each observable will be contained in a console group, this group is labeled
+using a human-readable name that describes the observeable (blue border box), in 
+most cases this name is made out of the constructor name decorated with some metadata. 
+
+Inside the group, the following properties are printed out:
 
 	- value: The current observable's value (red border box)
 	- object: The observable object reference (red border box)
@@ -70,23 +72,24 @@ with some metadata. Inside the group, the following properties are printed out:
 
 The properties in the red border box will be printed out for each observable in
 the dependency graph. The box with the green border contains subgroups, each of 
-these subgroups lists observables using the same pattern that we just described.
+these subgroups recursively prints out observables using the same pattern that we 
+just described (name, value/reference and its own dependencies grouped).
 
-The subgroup label indicates how these observables relate to the observable they are 
-contained within, in its current version, `can-debug` prints out the following labels
-when they apply: 
+The subgroup label indicates how these observables relate to the observable that 
+contains them, in its current version `can-debug` uses the following labels when 
+they apply: 
 
-	- DEPENDENCIES: lists observables used internally by the parent to compute its value.
-	- MUTATION DEPENDENCIES: lists observables that affect the value of the parent within a specific context.
-	- TWO WAY DEPENDENCIES: lists observables cross bound to their parent
+	- DEPENDENCIES: observables used internally by the parent to compute its value.
+	- MUTATION DEPENDENCIES: observables that affect the value of the parent within a specific context.
+	- TWO WAY DEPENDENCIES: observables cross bound to their parent
 
 Let's inspect the `Person{}.fullName`'s dependencies group:
 
 ![logWhatChangesMe dependencies](../node_modules/can-debug/doc/what-changes-me-deps.png)
 
-We can see the same pattern in the output inside the DEPENDENCIES group,
+We found the same pattern describe for the outer observable:
 
-	- The observable's pretty name in the blue border box,
+	- The observable's human-readable name in the blue border box,
 	- The observable's value and object reference in the red border box,
 	- And finally the observable's own dependencies in the green border box.
 
@@ -97,16 +100,16 @@ which in turn derive its value from `Person{}.first` and `Person{}.last` values.
 
 **NOTE**: Please note that some of the observables printed out in the console do not 
 necessarily match the ones found in application code, as mentioned before, observables 
-used internally are listed as dependencies, such is the case of `Observation<Person{}'s fullName getter>` in this example.
+used internally are listed as dependencies, such is the case of `Observation<Person{}'s fullName getter>` 
+in the example.
 
-Click the button in the example below and inspect the output in the browser's 
-console tab.
+Click the "logWhatChangesMe" button in the demo below and inspect the output in 
+the browser's console tab.
 
 @demo demos/can-debug/log-what-changes-map.html
 
 Understading the relationships between types is helpful to debug certain kind of 
-issues, but most of the time you want to understand what affects other kind of 
-observables: DOM nodes.
+issues, but most of the time you want to understand what affects DOM nodes rendering.
 
 The following example shows how to use `debug.logWhatChangesMe` to log what 
 changes the `<h1>` element bound to the `fullName` property.
@@ -138,18 +141,20 @@ This prints out the following message:
 
 ![logWhatChangesMe dependencies](../node_modules/can-debug/doc/what-changes-me-input.png)
 
-That's a long message! but once you have identified the pattern we discussed before, reading
-the output is a lot easier. The observables highlighted in blue border boxes are the most
-important to get a high level overview of the output, while the observables in between help 
-you make sense of how data flows from the top `<h1>` element to the `<input>` bound to the
-`first` property and back to the heading element. 
+That's a long message! but once you have identified the outpattern pattern we
+discussed before, make sense of it is a lot easier. The observables highlighted
+in blue border boxes are the most important to get a high level overview of the
+dependency graph, while the observables in between help you make sense of how data
+flows from the top `<h1>` element down to the `<input>` bound to the `first` property
+and back up to the `<h1>` heading element.
 
-Click the button in the example below and inspect the output in the browser's console tab:
+Click the "logWhatChangesMe" button in the demo below and inspect the output in
+the browser's console tab:
 
 @demo demos/can-debug/log-what-changes-heading.html
 
-`can-debug` also exports some low level utilities to allow users visualize 
-observable dependencies in different ways:
+`can-debug` also exports some low level utilities to allow users manipulate and
+explore the dependency graph:
 
 	- `debug.getGraph` returns a directed graph data structure, and 
 	- `debug.getDebugData` takes a dependendency graph and returns 
