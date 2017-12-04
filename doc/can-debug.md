@@ -162,38 +162,187 @@ library.
 ## How to write can-debug friendly code
 
 CanJS's internal observables are decorated with metadata and symbols used by
-`can-debug` to obtain the dependency graph. 
+`can-debug` to build the dependency graph. 
 
 For most CanJS applications, the default instrumentation should be enough
-to get reliable logs from `can-debug`; but some applications using custom 
-observable types or authors of CanJS's plugins will have to do some extra work
-to make their observables easier to debug.
+to get reliable logs from `can-debug`; but custom observable types require some 
+extra work to make them easier to debug.
 
-The following symbols must be implemented:
+The whole process can be sumarized in the following steps:
 
-	- `@@can.getName`: Provide a human readable name for the observable
-	- `@@can.getWhatIChange`: The dependencies mutated by the observable
-	- `@@can.getKeyDependencies`: The key dependencies of the observable
-	- `@@can.getValueDependencies`: The value dependencies of the observable	
-	- `@@can.getChangesDependencyRecord`: The dependencies mutated by an event 
-		handler (this will most likely be consumed by `@@can.getWhatIChange`).
+	- Give the observable a human-readable name
+	- Register what changes the observable
+	- Register what the observable changes
 
-Apart from the symbols listed above, cases where an observable change triggers a
-a mutation in another observable have to be registered using the
-`can-reflect-dependencies` package.
+### Give the observable a human-readable name
+
+The `@@@can.getName` symbol is used to provide human readable names for each
+observable in the dependency graph, this name is used by the default logger to
+label the groups containing the observable dependency data.
+
+The main goal of these names is help users get a glance of what the observable 
+does and what it is used for, there are no hard rules to create these names but
+CanJS uses the following convention for consistent names across its observable types.
+
+	a) The name starts with the observable constructor name
+	b) The constructor name is decorated with the following chars based on its type:
+		- `<>`: for value-like observables, e.g: `SimpleObservable<>`
+		- `[]`: for list-like observables, e.g: `DefineList[]` 
+		- `{}`: for map-like observables, e.g: `DefineMap{}`
+	c) Any property that makes the instance unique (like ids) are printed inside 
+		the chars mentioned before.
+
+The example below shows how to implement `@@@can.getName`, in a value-like 
+observable (similar to `can-simple-observable`).
+
+```js
+var canReflect = require("can-reflect");
+
+function MySimpleObservable(value) {
+	this.value = value;
+}
+
+canReflect.assignSymbols(MySimpleObservable.prototype, {
+	// The special comments tell Steal.js to remove the code during the build.
+	"can.getName": function() {
+		//!steal-remove-start
+		var value = JSON.stringify(this.value);
+		return canReflect.getName(this.constructor) + "<" + value + ">";
+		//!steal-remove-end
+	}
+});
+```
+
+With that in place, `MySimpleObservable` can be used like:
+
+```js
+var one = new MySimpleObservable(1);
+canReflect.getName(one); // MySimpleObservable<1>
+```
+
+### Register what changes the observable
+
+If the custom observable derives its value from other observables internally,
+the following symbols must be implemented:
+
+	- `@@@can.getKeyDependencies`: The key dependencies of the observable
+	- `@@@can.getValueDependencies`: The value dependencies of the observable	
 
 E.g:
 
 ```js
-var counter = new SimpleObservable(0);
-var map = new SimpleMap({ foo: "foo" });
+var canSymbol = require("can-symbol");
+var observation = require("can-observation");
 
-map.on("foo", function onFooChange() {
-	counter.set(counter.get() + 1);
-});
+function MyCustomObservable(value) {
+	this.observation = new Observation(...);
+}
 
-// Registers that counter's value is changed by the map's "foo" property
-canReflectDeps.addMutatedBy(counter, {
-	keyDependencies: new Map([[map, new Set(["foo"])]]);
+MyCustomObservable.prototype.get = function() {
+	return this.observation.get();
+};
+```
+
+`MyCustomObservable` uses an `Observation` instance internally to derive its value,
+since `Observation` is a value-like observable, `MyCustomObservable` has to implement
+`@@@can.getValueDependencies` so this relationship is visible to `can-debug`.
+
+```js
+function MyCustomObservable() { ... }
+
+...
+
+canReflect.assignSymbols(MyCustomObservable, {
+	"can.getValueDependencies": function() {
+		return {
+			valueDependencies: new Set([ this.observation ])
+		};
+	}
 });
 ```
+
+It's possible that a specific instance of `MyCustomObservable` gets mutated by
+another observable in a specific context, this kind of dependecies won't be registered
+by the symbols we discussed before and they are really important to get a sense
+of how data flows through different parts of the application.
+
+In order to keep track of these dependencies, `can-reflect-dependencies` must 
+be used:
+
+```js
+var someMap = new SomeMap();
+var myObservable = new MyCustomObservable();
+var canReflectDeps = require("can-reflect-dependencies");
+
+// when the foo property changes, update myObservable
+someMap.on("foo", function() {
+	myObservable.set(/* some value */);
+});
+
+// this registers that `myObservable` is mutated by the `foo` property of `someMap`
+canReflectDeps.addMutatedBy(myObservable, {
+	keyDependencies: new Map([ [someMap, new Set(["foo"])] ]);
+});
+```
+
+### Register the observable changes
+
+In the previous section, `can-reflect-dependencies` was used to register that
+`someMap.foo` changes `myObservable`; In its current form `can-reflect-dependencies` 
+can only "see" the dependency from `myObservable`, that means:
+
+```js
+// this works!
+canReflectDeps.getDependencyDataOf(myObservable);
+
+// but this does not, it returns `undefined` :(
+canReflectDeps.getDependencyDataOf(someMap, "foo");
+```
+
+In order to register the dependency in the opossite direction, the following things
+need to happen:
+
+	- `SomeMap` has to implement the `@@@can.getWhatIChange` symbol
+	- Event handlers attached to `SomeMap` instances need to implement the 
+		`@@@can.getChangesDependencyRecord` symbol to be used by `@@@can.getWhatIChange`.
+
+CanJS observables make this easier by attaching event handling capabilities through
+[can-event-queue](https://github.com/canjs/can-event-queue) mixins, adding in the
+[value mixin](https://github.com/canjs/can-event-queue/blob/master/value/value.js) to
+`SomeMap`'s prototype will add a base implementation of `@@@can.getWhatIChange` which
+iterates over the registered handlers and calls `@@@can.getChangesDependencyRecord` on
+each.
+
+Having `@@@can.getWhatIChange` implemented by `can-event-queue`, the next thing 
+to do is to implement `@@@can.getChangesDependencyRecord` on the event handler
+that mutates `myObservable`. 
+
+```js
+/* code omitted for brevity */
+
+// Bind the callback to a variable to make adding the symbol easier
+var onFooChange = function() {
+	myObservable.set(/* some value */);
+};
+
+canReflect.assignSymbols(onFooChange, {
+	"can.getChangesDependencyRecord": function() {
+		return {
+			valueDependencies: new Set([ myObservable ])
+		};
+	}
+});
+
+someMap.on("foo", onFooChange);
+```
+
+With this in place the following code should work now:
+
+```js
+canReflectDeps.getDependencyDataOf(someMap, "foo"); // ... myObservable
+```
+
+**NOTE**: This implementation requires `can-event-queue/value/value` mixin to be
+added to `SomeMap`'s prototype, if your observable uses custom event handling logic
+you need to implement `@@@can.getWhatIChange` and keep track of what the event handlers
+are mutating manually.
