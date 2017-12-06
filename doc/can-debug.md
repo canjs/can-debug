@@ -98,20 +98,21 @@ do not necessarily match the ones found in user's application code, as mentioned
 before, observables used internally are listed as dependencies, such is the case 
 of `Observation<Person{}'s fullName getter>` in the example.
 
-The following demos a live version of the previous example, click the [logWhatChangesMe] 
+The following demos a live version of the previous example, click the `logWhatChangesMe`
 button and open the browser's console tab to inspect the generated message:
 
 @demo demos/can-debug/log-what-changes-map.html
 
-Understading the relationships between types is helpful to debug certain kind of 
-issues, but most of the time you want to understand what affects another kind of 
-observables: DOM nodes.
+Understanding the relationships between types is helpful to debug certain kind 
+of issues, but most of the time you want to understand what affects another kind 
+of observables: DOM nodes.
 
 The following example builds upon the previous code, and adds two `<input>` elements
 that are cross bound to the `first` and `last` properties of the `Person` map, then
 `fullName` is printed out in the page using a `<h1>` element.
 
-Then [logWhatChangesMe] is called to log what observables affect the `<h1>` element:
+Then [can-debug.logWhatChangesMe] is called to log what observables affect the 
+`<h1>` element:
 
 ```js
 var Person = DefineMap.extend("Person", {
@@ -162,6 +163,6 @@ work to make them easier to debug.
 
 The whole process can be sumarized in the following steps:
 
-- Give the observable a human-readable name, check out [canReflect.getName] docs.
+- Give the observable a human-readable name, check out [can-reflect.getName] docs.
 - Register how the observable interacts with other observables, check out 
 [can-reflect-dependencies] docs.
