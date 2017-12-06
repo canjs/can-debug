@@ -1,5 +1,6 @@
 @function can-debug.getGraph getGraph
 @parent can-debug
+@hide
 
 @description Get the observable's dependency graph.
 

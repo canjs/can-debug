@@ -1,5 +1,6 @@
 @function can-debug.getDebugData getDebugData
 @parent can-debug
+@hide
 
 @description Get a deeply nested object from a dependency graph.
 

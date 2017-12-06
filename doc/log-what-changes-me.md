@@ -1,20 +1,26 @@
 @function can-debug.logWhatChangesMe logWhatChangesMe
 @parent can-debug
 
-@description Log what changes an observable.
+@description Log what affects an observable.
 
 @signature `debug.logWhatChangesMe(observable, [key])`
 
-Logs what changes the observable. If a `key` is provided, logs what changes the 
+Logs what affects the observable. If a `key` is provided, logs what affects the 
 `key` of the observable.
 
+The following example uses `DefineMap` to create a `Person` type with a `fullName`
+property that derives its value from `first` and `last`. Then it calls `logWhatChangesMe` 
+to log what affects the `fullName` property of the `me` Person instance:
+
 ```js
+var debug = require("can-debug");
+
 var Person = DefineMap.extend("Person", {
 	first: "string",
 	last: "string",
 	fullName: {
-		get: function() {
-			return this.first + " " + this.last;
+		get() {
+			return `${this.first} ${this.last}`;
 		}
 	}
 });
@@ -25,7 +31,8 @@ me.on("fullName", function() {});
 debug.logWhatChangesMe(me, "fullName");
 ```
 
-Logs
+Calling `logWhatChangesMe` prints out the following message to the browser's 
+console:
 
 ![logWhatChangesMe full output](../node_modules/can-debug/doc/what-changes-me-full.png)
 
