@@ -8,18 +8,18 @@ QUnit.test("it works", function(assert) {
 		node: { obj: {}, name: "PersonVM", key: "fullName", value: "John Doe" },
 		twoWay: [],
 		mutations: [],
-		dependencies: [
+		derive: [
 			{
 				node: { obj: {}, name: "PersonVM", key: "first", value: "John" },
 				twoWay: [],
 				mutations: [],
-				dependencies: []
+				derive: []
 			},
 			{
 				node: { obj: {}, name: "PersonVM", key: "last", value: "John" },
 				twoWay: [],
 				mutations: [],
-				dependencies: []
+				derive: []
 			}
 		]
 	};
@@ -33,7 +33,7 @@ QUnit.test("it works", function(assert) {
 	log(data);
 
 	// groups dependencies by "kind"
-	assert.ok(groups.has("DEPENDENCIES"));
+	assert.ok(groups.has("DERIVED DEPENDENCIES"));
 	assert.ok(!groups.has("MUTATION DEPENDENCIES"), "no empty groups");
 	assert.ok(!groups.has("TWO WAY DEPENDENCIES"), "no empty groups");
 

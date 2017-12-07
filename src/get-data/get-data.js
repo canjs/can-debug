@@ -2,9 +2,9 @@ var labelCycles = require("../label-cycles/label-cycles");
 
 var isDisconnected = function isDisconnected(data) {
 	return (
-		!data.twoWay.length &&
-		!data.dependencies.length &&
-		!data.mutations.length
+		!data.derive.length &&
+		!data.mutations.length &&
+		!data.twoWay.length
 	);
 };
 
@@ -17,7 +17,7 @@ module.exports = function getDebugData(inputGraph, direction) {
 	);
 
 	var visit = function visit(node) {
-		var data = { node: node, dependencies: [], mutations: [], twoWay: [] };
+		var data = { node: node, derive: [], mutations: [], twoWay: [] };
 
 		visited.set(node, true);
 
@@ -31,7 +31,7 @@ module.exports = function getDebugData(inputGraph, direction) {
 						break;
 
 					case "derive":
-						data.dependencies.push(visit(adj));
+						data.derive.push(visit(adj));
 						break;
 
 					case "mutate":
