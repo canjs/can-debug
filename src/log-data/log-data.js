@@ -12,9 +12,9 @@ module.exports = function log(data) {
 	console.log("value  ", quoteString(node.value));
 	console.log("object ", node.obj);
 
-	if (data.dependencies.length) {
-		console.group("DEPENDENCIES");
-		canReflect.eachIndex(data.dependencies, log);
+	if (data.derive.length) {
+		console.group("DERIVED DEPENDENCIES");
+		canReflect.eachIndex(data.derive, log);
 		console.groupEnd();
 	}
 

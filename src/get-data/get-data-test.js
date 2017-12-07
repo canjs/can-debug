@@ -24,18 +24,18 @@ QUnit.test("outcoming arrows - whatIChange data", function(assert) {
 		node: one,
 		twoWay: [],
 		mutations: [],
-		dependencies: [
+		derive: [
 			{
 				node: two,
 				twoWay: [],
 				mutations: [],
-				dependencies: []
+				derive: []
 			},
 			{
 				node: three,
 				twoWay: [],
 				mutations: [],
-				dependencies: []
+				derive: []
 			}
 		]
 	});
@@ -80,18 +80,18 @@ QUnit.test("works with acyclic graphs (any direction)", function(assert) {
 		node: one,
 		twoWay: [],
 		mutations: [],
-		dependencies: [
+		derive: [
 			{
 				node: two,
 				twoWay: [],
 				mutations: [],
-				dependencies: []
+				derive: []
 			},
 			{
 				node: three,
 				twoWay: [],
 				mutations: [],
-				dependencies: []
+				derive: []
 			}
 		]
 	});
@@ -117,17 +117,17 @@ QUnit.test("works with graphs including cycles", function(assert) {
 		node: one,
 		twoWay: [],
 		mutations: [],
-		dependencies: [
+		derive: [
 			{
 				node: two,
 				mutations: [],
-				dependencies: [],
+				derive: [],
 				twoWay: [
 					{
 						node: three,
 						twoWay: [],
 						mutations: [],
-						dependencies: []
+						derive: []
 					}
 				]
 			}

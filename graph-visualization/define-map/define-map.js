@@ -19,11 +19,11 @@ var Person = DefineMap.extend("Person", {
 });
 
 var me = new Person({ first: "John", last: "Doe" });
-me.on("first", function() {});
-me.on("fullName", function() {});
+me.on("ocupation", function() {});
 
-// debug.logWhatChangesMe(me, "ocupation");
+debug.logWhatChangesMe(me, "ocupation");
 draw(
 	document.querySelector("#container"),
-	debug.getGraph(me, "first")
+	debug.getGraph(me, "ocupation")
 );
+
