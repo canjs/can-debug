@@ -33,9 +33,9 @@ QUnit.test("it works", function(assert) {
 	log(data);
 
 	// groups dependencies by "kind"
-	assert.ok(groups.has("DERIVED DEPENDENCIES"));
-	assert.ok(!groups.has("MUTATION DEPENDENCIES"), "no empty groups");
-	assert.ok(!groups.has("TWO WAY DEPENDENCIES"), "no empty groups");
+	assert.ok(groups.has("DERIVED FROM"));
+	assert.ok(!groups.has("MUTATED BY"), "no empty groups");
+	assert.ok(!groups.has("TWO WAY"), "no empty groups");
 
 	// creates groups for each dependency
 	assert.ok(groups.has("PersonVM.fullName"));

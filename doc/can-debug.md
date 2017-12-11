@@ -28,8 +28,8 @@ Exports an object with the following methods:
 `can-debug` exports functions to log how observables affect each other. These 
 functions can be used to understand the flow of data throughout an application.
 
-The following example shows how to use the [logWhatChangesMe] function to log 
-what affects the value of the `fullName` property on the `me` Person instance.
+The following example shows how to use the [can-debug.logWhatChangesMe] function 
+to log what affects the value of the `fullName` property on the `me` Person instance.
 
 ```js
 var Person = DefineMap.extend("Person", {
@@ -76,11 +76,11 @@ blue border box, these dependencies are grouped based on their relation to the
 parent observable, in its current version `can-debug` outputs the following 
 groups:
 
-- **DERIVED DEPENDENCIES**: observables used internally by the parent to derive its value.
-- **MUTATION DEPENDENCIES**: observables that set the value of the parent observable 
+- **DERIVED FROM**: observables used internally by the parent to derive its value.
+- **MUTATED BY**: observables that set the value of the parent observable 
   these are mostly found inside CanJS internals, where observables interact with
 	each other, like [can-stache-bindings].
-- **TWO WAY DEPENDENCIES**: observables that are both derived and mutation dependencies.
+- **TWO WAY**: observables that are both derived and mutation dependencies.
 
 The observables in each group are printed out recursively using the same format we 
 just described, We can can confirm this by expanding `Person{}.fullName`'s dependencies 

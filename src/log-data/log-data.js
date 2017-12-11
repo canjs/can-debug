@@ -13,19 +13,19 @@ module.exports = function log(data) {
 	console.log("object ", node.obj);
 
 	if (data.derive.length) {
-		console.group("DERIVED DEPENDENCIES");
+		console.group("DERIVED FROM");
 		canReflect.eachIndex(data.derive, log);
 		console.groupEnd();
 	}
 
 	if (data.mutations.length) {
-		console.group("MUTATION DEPENDENCIES");
+		console.group("MUTATED BY");
 		canReflect.eachIndex(data.mutations, log);
 		console.groupEnd();
 	}
 
 	if (data.twoWay.length) {
-		console.group("TWO WAY DEPENDENCIES");
+		console.group("TWO WAY");
 		canReflect.eachIndex(data.twoWay, log);
 		console.groupEnd();
 	}
