@@ -93,10 +93,10 @@ The whole output can be read as:
 `Person{}.fullName` derives its value from `Observation<Person{}'s fullName getter>`,
 which in turn derive its value from `Person{}.first` and `Person{}.last` values.
 
-**NOTE**: Please keep in mind that some of the observables printed out in the console 
-do not necessarily match the ones found in user's application code, as mentioned 
-before, observables used internally are listed as dependencies, such is the case 
-of `Observation<Person{}'s fullName getter>` in the example.
+> Note: Please keep in mind that some of the observables printed out in the console 
+> do not necessarily match the ones found in user's application code, as mentioned 
+> before, observables used internally are listed as dependencies, such is the case 
+> of `Observation<Person{}'s fullName getter>` in the example.
 
 The following demos a live version of the previous example, click the `logWhatChangesMe`
 button and open the browser's console tab to inspect the generated message:
