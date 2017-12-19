@@ -11,3 +11,14 @@ module.exports = namespace.debug = {
 	logWhatIChange: logWhatIChange,
 	logWhatChangesMe: logWhatChangesMe
 };
+
+var warned = false;
+window.can = new Proxy(namespace, {
+	get: function get(target, name) {
+		if (!warned) {
+			console.warn("Warning: use of 'can' global should be for debugging purposes only.");
+			warned = true;
+		}
+		return target[name];
+	}
+});

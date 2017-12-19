@@ -1,11 +1,33 @@
-require("can-debug/src/graph/graph-test");
-require("can-debug/src/get-data/get-data-test");
-require("can-debug/src/get-graph/get-graph-test");
-require("can-debug/src/label-cycles/label-cycles-test");
+var QUnit = require("steal-qunit");
+var debug = require("can-debug");
 
-require("can-debug/src/log-data/log-data-test");
-require("can-debug/src/what-i-change/what-i-change");
-require("can-debug/src/what-changes-me/what-changes-me-test");
-require("can-debug/src/get-what-i-change/get-what-i-change-test");
-require("can-debug/src/get-what-changes-me/get-what-changes-me-test");
+QUnit.module("can-debug");
 
+QUnit.test("exports an object", function(assert) {
+	assert.equal(typeof debug, "object", "should set global namespace");
+	assert.equal(typeof debug.logWhatChangesMe, "function");
+	assert.equal(typeof debug.logWhatChangesMe, "function");
+});
+
+QUnit.test("sets can global namespace", function(assert) {
+	assert.equal(typeof window.can, "object", "should set global namespace");
+});
+
+QUnit.test("warns users accessing global namespace once", function(assert) {
+	var warn = console.warn;
+
+	assert.expect(1);
+	console.warn = function(msg) {
+		assert.ok(/for debugging purposes only/.test(msg));
+	};
+
+	var d = can.debug;
+	d = can.debug;
+	d = can.debug;
+
+	console.warn = warn;
+});
+
+QUnit.test("sets itself on the global namespace", function(assert) {
+	assert.equal(typeof can.debug, "object", "should set itself");
+});
