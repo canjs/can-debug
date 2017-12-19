@@ -1,6 +1,7 @@
 var debug = require("can-debug/can-debug");
 var DefineMap = require("can-define/map/map");
 var draw = require("can-debug/graph-visualization/draw");
+var getGraph = require("can-debug/src/get-graph/get-graph");
 
 var Person = DefineMap.extend("Person", {
 	first: "string",
@@ -24,6 +25,6 @@ me.on("ocupation", function() {});
 debug.logWhatChangesMe(me, "ocupation");
 draw(
 	document.querySelector("#container"),
-	debug.getGraph(me, "ocupation")
+	getGraph(me, "ocupation")
 );
 

@@ -1,5 +1,5 @@
-var debug = require("can-debug/can-debug");
 var draw = require("can-debug/graph-visualization/draw");
+var getGraph = require("can-debug/src/get-graph/get-graph");
 
 var canReflect = require("can-reflect");
 var Observation = require("can-observation");
@@ -15,5 +15,5 @@ var obs = new Observation(function() {
 canReflect.onValue(obs, function() {});
 draw(
 	document.querySelector("#container"),
-	debug.getGraph(obs)
+	getGraph(obs)
 );
