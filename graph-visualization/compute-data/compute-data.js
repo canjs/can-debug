@@ -1,5 +1,5 @@
-var debug = require("can-debug/can-debug");
 var draw = require("can-debug/graph-visualization/draw");
+var getGraph = require("can-debug/src/get-graph/get-graph");
 
 var Scope = require("can-view-scope");
 var DefineMap = require("can-define/map/map");
@@ -23,5 +23,5 @@ computeData.compute.bind("change", function() {});
 console.log(mutateDeps.getDependencyDataOf(computeData));
 draw(
 	document.querySelector("#container"),
-	debug.getGraph(computeData)
+	getGraph(computeData)
 );

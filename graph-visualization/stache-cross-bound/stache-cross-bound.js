@@ -1,5 +1,5 @@
-var debug = require("can-debug/can-debug");
 var draw = require("can-debug/graph-visualization/draw");
+var getGraph = require("can-debug/src/get-graph/get-graph");
 
 var stache = require("can-stache");
 var DefineMap = require("can-define/map/map");
@@ -26,5 +26,5 @@ var scope = new Person({ first: "Jane", last: "Doe" });
 document.querySelector("#slot").appendChild(view(scope));
 draw(
 	document.querySelector("#container"),
-	debug.getGraph(document.querySelector("#full"))
+	getGraph(document.querySelector("#full"))
 );
