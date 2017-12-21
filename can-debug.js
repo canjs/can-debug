@@ -1,4 +1,5 @@
 var namespace = require("can-namespace");
+var proxyNamespace = require("./src/proxy-namespace");
 
 var logWhatIChange = require("./src/what-i-change/what-i-change");
 var logWhatChangesMe = require("./src/what-changes-me/what-changes-me");
@@ -11,3 +12,5 @@ module.exports = namespace.debug = {
 	logWhatIChange: logWhatIChange,
 	logWhatChangesMe: logWhatChangesMe
 };
+
+window.can = Proxy != null ? proxyNamespace(namespace) : namespace;
