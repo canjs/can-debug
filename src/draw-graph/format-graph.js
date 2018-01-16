@@ -1,8 +1,8 @@
-var vis = require("vis");
 var canReflect = require("can-reflect");
 
-module.exports = function draw(container, graph) {
-	// creates a Map where the node is the key and a numeric id the value
+// Converts the graph into a data structure that vis.js requires to draw the graph
+module.exports = function formatGraph(graph) {
+	// { [node]: Number }
 	var nodeIdMap = new Map(
 		graph.nodes.map(function(node, index) {
 			return [node, index + 1];
@@ -12,18 +12,16 @@ module.exports = function draw(container, graph) {
 	// collects nodes in the shape of { id: Number, label: String }
 	var nodesDataSet = graph.nodes.map(function(node) {
 		return {
+			shape: "box",
 			id: nodeIdMap.get(node),
 			label:
 				canReflect.getName(node.obj) +
-				(node.key ? "." + node.key : "") +
-				" " +
-				node.order
+				(node.key ? "." + node.key : "")
 		};
 	});
 
 	var getArrowData = function getArrowData(meta) {
 		var regular = { arrows: "to" };
-		// var twoWay = { arrows: "to, from" };
 		var withDashes = { arrows: "to", dashes: true };
 
 		var map = {
@@ -62,19 +60,9 @@ module.exports = function draw(container, graph) {
 
 		visit(node);
 	});
-
-	var data = {
-		nodes: new vis.DataSet(nodesDataSet),
-		edges: new vis.DataSet(arrowsDataSet)
+	
+	return {
+		nodes: nodesDataSet,
+		edges: arrowsDataSet
 	};
-
-	var options = {
-		width: window.innerWidth - 25 + "px",
-		height: window.innerHeight - 75 + "px",
-		physics: {
-			solver: "repulsion"
-		}
-	};
-
-	return new vis.Network(container, data, options);
 };
