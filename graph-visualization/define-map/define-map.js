@@ -1,5 +1,5 @@
+var debug = require("can-debug");
 var DefineMap = require("can-define/map/map");
-var draw = require("can-debug/src/draw-graph/draw-graph");
 
 var Person = DefineMap.extend("Person", {
 	first: "string",
@@ -18,6 +18,4 @@ var Person = DefineMap.extend("Person", {
 });
 
 var me = new Person({ first: "John", last: "Doe" });
-me.on("ocupation", function() {});
-
-draw(me, "ocupation");
+debug.drawGraph(me, "ocupation");
