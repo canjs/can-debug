@@ -8,9 +8,9 @@
     "url": "git://github.com/Bitovi/can-debug.git"
   },
   "author": {
-    "name": "",
-    "email": "",
-    "url": ""
+    "name": "Bitovi",
+    "email": "contact@bitovi.com",
+    "web": "http://bitovi.com/"
   },
   "scripts": {
     "preversion": "npm test && npm run build",

@@ -1,20 +1,15 @@
 var canViewModel = require("can-view-model");
 var DefineMap = require("can-define/map/map");
-var draw = require("can-debug/graph-visualization/draw");
-var getGraph = require("can-debug/src/get-graph/get-graph");
+var draw = require("can-debug/src/draw-graph/draw-graph");
 
 var stache = require("can-stache");
 require("can-stache-bindings");
 
 var $slot = document.querySelector("#slot");
-var $container = document.querySelector("#container");
-
 var view = stache('<div id="comp" vm:viewModelProp:from="scopeProp"></div>');
 var map = new DefineMap({ scopeProp: "Venus" });
+
 $slot.appendChild(view(map));
 
 var vm = canViewModel(document.querySelector("#comp"));
-draw(
-	$container,
-	getGraph(vm, "viewModelProp")
-);
+draw(vm, "viewModelProp");

@@ -1,6 +1,6 @@
 var warned = false;
 
-module.exports = function proxyNamescape(namespace) {
+module.exports = function proxyNamespace(namespace) {
 	return new Proxy(namespace, {
 		get: function get(target, name) {
 			if (!warned) {

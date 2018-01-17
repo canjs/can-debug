@@ -1,8 +1,7 @@
-var draw = require("can-debug/graph-visualization/draw");
-var getGraph = require("can-debug/src/get-graph/get-graph");
-
 var stache = require("can-stache");
 var DefineMap = require("can-define/map/map");
+var draw = require("can-debug/src/draw-graph/draw-graph");
+
 require("can-stache-bindings");
 
 var Person = DefineMap.extend("Person", {
@@ -19,7 +18,4 @@ var view = stache('<input id="first" value:from="first">');
 var scope = new Person({ first: "Jane", last: "Doe" });
 
 document.querySelector("#slot").appendChild(view(scope));
-draw(
-	document.querySelector("#container"),
-	getGraph(document.querySelector("#first"), "value")
-);
+draw(document.querySelector("#first"), "value");
