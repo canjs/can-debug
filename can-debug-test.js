@@ -51,3 +51,7 @@ QUnit.test("binds automatically #33", function(assert) {
 
 	assert.ok(data.derive.length, "should return dependencies");
 });
+
+QUnit.test("calls canReflect bind symbols safely", function(assert) {
+	assert.ok(debug.getWhatChangesMe({}) === null, "should not throw");
+});
