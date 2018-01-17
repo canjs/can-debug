@@ -1,6 +1,6 @@
+var debug = require("can-debug");
 var canViewModel = require("can-view-model");
 var DefineMap = require("can-define/map/map");
-var draw = require("can-debug/src/draw-graph/draw-graph");
 
 var stache = require("can-stache");
 require("can-stache-bindings");
@@ -12,4 +12,4 @@ var map = new DefineMap({ scopeProp: "Venus" });
 $slot.appendChild(view(map));
 
 var vm = canViewModel(document.querySelector("#comp"));
-draw(vm, "viewModelProp");
+debug.drawGraph(vm, "viewModelProp");

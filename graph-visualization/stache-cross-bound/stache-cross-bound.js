@@ -1,6 +1,6 @@
+var debug = require("can-debug");
 var stache = require("can-stache");
 var DefineMap = require("can-define/map/map");
-var draw = require("can-debug/src/draw-graph/draw-graph");
 
 require("can-stache-bindings");
 
@@ -23,4 +23,4 @@ var view = stache(`
 var scope = new Person({ first: "Jane", last: "Doe" });
 
 document.querySelector("#slot").appendChild(view(scope));
-draw(document.querySelector("#full"));
+debug.drawGraph(document.querySelector("#full"));
