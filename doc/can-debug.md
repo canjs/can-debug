@@ -43,10 +43,6 @@ var Person = DefineMap.extend("Person", {
 });
 
 var me = new Person({ first: "John", last: "Doe" });
-
-// The observable must be bound for `logWhatChangesMe` to work correctly.
-me.on("fullName", function() {});
-
 debug.logWhatChangesMe(me, "fullName");
 ```
 
