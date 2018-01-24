@@ -47,7 +47,7 @@ debug.logWhatIChange(document.querySelector("#first"), "value");
 It logs the observables affected by the `value` attribute of the `<input>`
 element as shown below:
 
-![logWhatIChange](../node_modules/can-debug/doc/what-i-change.png)
+<img class="bit-docs-screenshot" alt="logWhatIChange" src="../node_modules/can-debug/doc/what-i-change.png">
 
 @param {Object} observable An observable.
 @param {Any} [key] The key of a property on a map-like observable.

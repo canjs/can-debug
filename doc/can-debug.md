@@ -14,8 +14,7 @@ Exports an object with the following methods:
 
 ```js
 {
-	getGraph         // Get the observable dependency graph
-	getDebugData     // Get the observable dependencies as a deeply nested object
+	drawGraph        // Draws the dependency graph in a new window
 	logWhatIChange   // Log what the observable affects
 	logWhatChangesMe // Log what affects the observable
 }
@@ -48,13 +47,13 @@ debug.logWhatChangesMe(me, "fullName");
 
 Which prints out the following message to the browser's console:
 
-![logWhatChangesMe full output](../node_modules/can-debug/doc/what-changes-me-full.png)
+<img class="bit-docs-screenshot" alt="logWhatchangesMe full output" src="../node_modules/can-debug/doc/what-changes-me-full.png">
 
 At first, the message might be very confusing, specially so in larger examples 
 where multiple observables are involved. Let's break it up in smaller sections to 
 get a better understanding of what each means:
 
-![logWhatChangesMe output](../node_modules/can-debug/doc/what-changes-me-top.png)
+<img class="bit-docs-screenshot" alt="logWhatchangesMe output" src="../node_modules/can-debug/doc/what-changes-me-top.png">
 
 The following values are printed out for each observable in the dependency graph:
 
@@ -82,7 +81,7 @@ The observables in each group are printed out recursively using the same format 
 just described, We can can confirm this by expanding `Person{}.fullName`'s dependencies 
 group:
 
-![logWhatChangesMe dependencies](../node_modules/can-debug/doc/what-changes-me-deps.png)
+<img class="bit-docs-screenshot" alt="dependencies" src="../node_modules/can-debug/doc/what-changes-me-deps.png">
 
 The whole output can be read as:
 
@@ -135,7 +134,7 @@ debug.logWhatChangeMe(document.querySelect("#full"));
 
 This prints out the following message:
 
-![logWhatChangesMe dependencies](../node_modules/can-debug/doc/what-changes-me-input.png)
+<img class="bit-docs-screenshot" alt="logWhatChangesMe" src="../node_modules/can-debug/doc/what-changes-me-input.png">
 
 That's a long message! but once you have identified the output pattern, making sense 
 of it is a lot easier. The observables highlighted in blue border boxes are the most 
