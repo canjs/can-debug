@@ -32,7 +32,7 @@ debug.logWhatChangesMe(me, "fullName");
 Calling `logWhatChangesMe` prints out the following message to the browser's 
 console:
 
-![logWhatChangesMe full output](../node_modules/can-debug/doc/what-changes-me-full.png)
+<img class="bit-docs-screenshot" alt="logWhatChangesMe" src="../node_modules/can-debug/doc/what-changes-me-full.png">
 
 @param {Object} observable An observable.
 @param {Any} [key] The key of a property on a map-like observable.

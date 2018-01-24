@@ -40,7 +40,7 @@ debug.drawGraph(me, "fullName");
 
 Calling `debug.drawGraph` opens up a new browser window like this:
 
-![dependencyGraph](../node_modules/can-debug/doc/map-dependency-graph.png)
+<img class="bit-docs-screenshot" alt="dependencyGraph" src="../node_modules/can-debug/doc/map-dependency-graph.png">
 
 @param {Object} observable An observable.
 @param {Any} [key] The key of a property on a map-like observable.
