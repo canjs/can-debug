@@ -12,21 +12,21 @@ an arrows goes from "x" to "y" ("x" is the head and "y" is the tail) it can be r
 as "x" changes "y"; if the arrow goes in the opposite direction it can be read as "x" 
 is changed by "y" or "x" derives its value from "y".
 
-```js
-var Person = DefineMap.extend("Person", {
-	first: "string",
-	last: "string",
-	fullName: {
-		get: function() {
-			return this.first + " " + this.last;
-		}
-	}
+```javascript
+const Person = DefineMap.extend("Person", {
+  first: "string",
+  last: "string",
+  fullName: {
+    get: function() {
+      return this.first + " " + this.last;
+    }
+  }
 });
 
-var me = new Person({ first: "John", last: "Doe" });
+const me = new Person({ first: "John", last: "Doe" });
 me.on("fullName", function() {});
 
-var graph = debug.getGraph(me, "fullName");
+const graph = debug.getGraph(me, "fullName");
 ```
 
 Using a visualization library, the graph returned in the above example looks like 

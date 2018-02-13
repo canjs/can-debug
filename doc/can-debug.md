@@ -30,8 +30,8 @@ functions can be used to understand the flow of data throughout an application.
 The following example shows how to use the [can-debug.logWhatChangesMe] function
 to log what affects the value of the `fullName` property on the `me` Person instance.
 
-```js
-var Person = DefineMap.extend("Person", {
+```javascript
+const Person = DefineMap.extend("Person", {
   first: "string",
   last: "string",
   fullName: {
@@ -41,7 +41,7 @@ var Person = DefineMap.extend("Person", {
   }
 });
 
-var me = new Person({ first: "John", last: "Doe" });
+const me = new Person({ first: "John", last: "Doe" });
 debug.logWhatChangesMe(me, "fullName");
 ```
 
@@ -109,24 +109,24 @@ that are cross bound to the `first` and `last` properties of the `Person` map, t
 Then [can-debug.logWhatChangesMe] is called to log what observables affect the
 `<h1>` element:
 
-```js
-var Person = DefineMap.extend("Person", {
-	first: "string",
-	last: "string",
-	fullName: {
-		get() {
-			return `${this.first} ${this.last}`;
-		}
-	}
+```javascript
+const Person = DefineMap.extend("Person", {
+  first: "string",
+  last: "string",
+  fullName: {
+    get() {
+      return `${this.first} ${this.last}`;
+    }
+  }
 });
 
-var template = stache(`
-	<h1 id="full">{{fullName}}</h1>
-	<input id="first" value:bind="first">
-	<input id="last" value:bind="last">
+const template = stache(`
+  <h1 id="full">{{fullName}}</h1>
+  <input id="first" value:bind="first">
+  <input id="last" value:bind="last">
 `);
 
-var scope = new Person({ first: "Jane", last: "Doe" });
+const scope = new Person({ first: "Jane", last: "Doe" });
 document.body.appendChild(template(scope));
 
 debug.logWhatChangeMe(document.querySelect("#full"));

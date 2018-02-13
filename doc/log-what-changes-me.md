@@ -12,20 +12,20 @@ The following example uses `DefineMap` to create a `Person` type with a `fullNam
 property that derives its value from `first` and `last`. Then it calls `logWhatChangesMe` 
 to log what affects the `fullName` property of the `me` Person instance:
 
-```js
-var debug = require("can-debug");
+```javascript
+import debug from "can-debug";
 
-var Person = DefineMap.extend("Person", {
-	first: "string",
-	last: "string",
-	fullName: {
-		get() {
-			return `${this.first} ${this.last}`;
-		}
-	}
+const Person = DefineMap.extend("Person", {
+  first: "string",
+  last: "string",
+  fullName: {
+    get() {
+      return `${this.first} ${this.last}`;
+    }
+  }
 });
 
-var me = new Person({ first: "John", last: "Doe" });
+const me = new Person({ first: "John", last: "Doe" });
 debug.logWhatChangesMe(me, "fullName");
 ```
 

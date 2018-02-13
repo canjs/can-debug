@@ -16,23 +16,23 @@ and it is useful for users wanting to roll their own log output format. The opti
 That means it's possible to get only the observables used to derive the value from,
 or to get all the observables that are changed by a given object.
 
-```js
-var Person = DefineMap.extend("Person", {
-	first: "string",
-	last: "string",
-	fullName: {
-		get: function() {
-			return this.first + " " + this.last;
-		}
-	}
+```javascript
+const Person = DefineMap.extend("Person", {
+  first: "string",
+  last: "string",
+  fullName: {
+    get: function() {
+      return this.first + " " + this.last;
+    }
+  }
 });
 
-var me = new Person({ first: "John", last: "Doe" });
+const me = new Person({ first: "John", last: "Doe" });
 me.on("fullName", function() {});
 
 console.log(
-	debug.getDebugData(debug.getGraph(me, "fullName")),
-	"whatChangesMe"
+  debug.getDebugData(debug.getGraph(me, "fullName")),
+  "whatChangesMe"
 );
 ```
 
