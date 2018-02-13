@@ -12,15 +12,15 @@ an arrows goes from "x" to "y" ("x" is the head and "y" is the tail) it can be r
 as "x" changes "y"; if the arrow goes in the opposite direction it can be read as "x" 
 is changed by "y" or "x" derives its value from "y".
 
-```javascript
+```js
 const Person = DefineMap.extend("Person", {
-  first: "string",
-  last: "string",
-  fullName: {
-    get: function() {
-      return this.first + " " + this.last;
-    }
-  }
+	first: "string",
+	last: "string",
+	fullName: {
+		get: function() {
+			return this.first + " " + this.last;
+		}
+	}
 });
 
 const me = new Person({ first: "John", last: "Doe" });

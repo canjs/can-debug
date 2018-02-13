@@ -16,20 +16,20 @@ The template renders two `<input>` elements bound to `first` and `last` respecti
 and prints out the `fullName` value in a `<h1>` element. Then it calls `logWhatIChange`
 passing the `<input>` element reference with id "first".
 
-```javascript
+```js
 import debug from "can-debug";
 import stache from "can-stache";
 import DefineMap from "can-define/map/map";
 require("can-stache-bindings");
 
 const Person = DefineMap.extend("Person", {
-  first: "string",
-  last: "string",
-  fullName: {
-    get() {
-      return `${this.first} ${this.last}`;
-    }
-  }
+	first: "string",
+	last: "string",
+	fullName: {
+		get() {
+			return `${this.first} ${this.last}`;
+		}
+	}
 });
 
 const view = stache(`

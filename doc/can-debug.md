@@ -30,15 +30,15 @@ functions can be used to understand the flow of data throughout an application.
 The following example shows how to use the [can-debug.logWhatChangesMe] function
 to log what affects the value of the `fullName` property on the `me` Person instance.
 
-```javascript
+```js
 const Person = DefineMap.extend("Person", {
-  first: "string",
-  last: "string",
-  fullName: {
-    get: function() {
-      return this.first + " " + this.last;
-    }
-  }
+	first: "string",
+	last: "string",
+	fullName: {
+		get: function() {
+			return this.first + " " + this.last;
+		}
+	}
 });
 
 const me = new Person({ first: "John", last: "Doe" });
@@ -109,15 +109,15 @@ that are cross bound to the `first` and `last` properties of the `Person` map, t
 Then [can-debug.logWhatChangesMe] is called to log what observables affect the
 `<h1>` element:
 
-```javascript
+```js
 const Person = DefineMap.extend("Person", {
-  first: "string",
-  last: "string",
-  fullName: {
-    get() {
-      return `${this.first} ${this.last}`;
-    }
-  }
+	first: "string",
+	last: "string",
+	fullName: {
+		get() {
+			return `${this.first} ${this.last}`;
+		}
+	}
 });
 
 const template = stache(`

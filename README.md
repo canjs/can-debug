@@ -10,7 +10,7 @@ CanJS Debugger
 
 With StealJS, you can import this module directly in a template that is autorendered:
 
-```javascript
+```js
 import plugin from 'can-debug';
 ```
 
@@ -19,7 +19,7 @@ import plugin from 'can-debug';
 Use `require` to load `can-debug` and everything else
 needed to create a template that uses `can-debug`:
 
-```javascript
+```js
 import plugin from "can-debug";
 ```
 

@@ -21,17 +21,17 @@ property that derives its value from `first` and `last`. Then it calls `drawGrap
 to display (in a new browser window) the dependency graph of the `fullName` property 
 of the `me` Person instance:
 
-```javascript
+```js
 import debug from "can-debug";
 
 const Person = DefineMap.extend("Person", {
-  first: "string",
-  last: "string",
-  fullName: {
-    get() {
-      return `${this.first} ${this.last}`;
-    }
-  }
+	first: "string",
+	last: "string",
+	fullName: {
+		get() {
+			return `${this.first} ${this.last}`;
+		}
+	}
 });
 
 const me = new Person({ first: "John", last: "Doe" });
