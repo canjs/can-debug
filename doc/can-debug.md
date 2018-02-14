@@ -31,7 +31,7 @@ The following example shows how to use the [can-debug.logWhatChangesMe] function
 to log what affects the value of the `fullName` property on the `me` Person instance.
 
 ```js
-const Person = DefineMap.extend("Person", {
+const Person = DefineMap.extend( "Person", {
 	first: "string",
 	last: "string",
 	fullName: {
@@ -39,10 +39,10 @@ const Person = DefineMap.extend("Person", {
 			return this.first + " " + this.last;
 		}
 	}
-});
+} );
 
-const me = new Person({ first: "John", last: "Doe" });
-debug.logWhatChangesMe(me, "fullName");
+const me = new Person( { first: "John", last: "Doe" } );
+debug.logWhatChangesMe( me, "fullName" );
 ```
 
 Which prints out the following message to the browser's console:
@@ -110,7 +110,7 @@ Then [can-debug.logWhatChangesMe] is called to log what observables affect the
 `<h1>` element:
 
 ```js
-const Person = DefineMap.extend("Person", {
+const Person = DefineMap.extend( "Person", {
 	first: "string",
 	last: "string",
 	fullName: {
@@ -118,18 +118,18 @@ const Person = DefineMap.extend("Person", {
 			return `${this.first} ${this.last}`;
 		}
 	}
-});
+} );
 
-const template = stache(`
+const template = stache( `
   <h1 id="full">{{fullName}}</h1>
   <input id="first" value:bind="first">
   <input id="last" value:bind="last">
-`);
+` );
 
-const scope = new Person({ first: "Jane", last: "Doe" });
-document.body.appendChild(template(scope));
+const scope = new Person( { first: "Jane", last: "Doe" } );
+document.body.appendChild( template( scope ) );
 
-debug.logWhatChangeMe(document.querySelect("#full"));
+debug.logWhatChangeMe( document.querySelect( "#full" ) );
 ```
 
 This prints out the following message:

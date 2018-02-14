@@ -15,7 +15,7 @@ to log what affects the `fullName` property of the `me` Person instance:
 ```js
 import debug from "can-debug";
 
-const Person = DefineMap.extend("Person", {
+const Person = DefineMap.extend( "Person", {
 	first: "string",
 	last: "string",
 	fullName: {
@@ -23,10 +23,10 @@ const Person = DefineMap.extend("Person", {
 			return `${this.first} ${this.last}`;
 		}
 	}
-});
+} );
 
-const me = new Person({ first: "John", last: "Doe" });
-debug.logWhatChangesMe(me, "fullName");
+const me = new Person( { first: "John", last: "Doe" } );
+debug.logWhatChangesMe( me, "fullName" );
 ```
 
 Calling `logWhatChangesMe` prints out the following message to the browser's 

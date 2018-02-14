@@ -11,7 +11,7 @@ CanJS Debugger
 With StealJS, you can import this module directly in a template that is autorendered:
 
 ```js
-import plugin from 'can-debug';
+import plugin from "can-debug";
 ```
 
 ### CommonJS use

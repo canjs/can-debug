@@ -20,9 +20,9 @@ passing the `<input>` element reference with id "first".
 import debug from "can-debug";
 import stache from "can-stache";
 import DefineMap from "can-define/map/map";
-require("can-stache-bindings");
+require( "can-stache-bindings" );
 
-const Person = DefineMap.extend("Person", {
+const Person = DefineMap.extend( "Person", {
 	first: "string",
 	last: "string",
 	fullName: {
@@ -30,18 +30,18 @@ const Person = DefineMap.extend("Person", {
 			return `${this.first} ${this.last}`;
 		}
 	}
-});
+} );
 
-const view = stache(`
+const view = stache( `
   <h1 id="full">{{fullName}}</h1>
   <input id="first" value:bind="first">
   <input id="last" value:bind="last">
-`);
+` );
 
-const scope = new Person({ first: "Jane", last: "Doe" });
-document.body.appendChild(view(scope));
+const scope = new Person( { first: "Jane", last: "Doe" } );
+document.body.appendChild( view( scope ) );
 
-debug.logWhatIChange(document.querySelector("#first"), "value");
+debug.logWhatIChange( document.querySelector( "#first" ), "value" );
 ```
 
 It logs the observables affected by the `value` attribute of the `<input>`

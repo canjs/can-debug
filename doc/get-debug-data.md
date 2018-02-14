@@ -17,7 +17,7 @@ That means it's possible to get only the observables used to derive the value fr
 or to get all the observables that are changed by a given object.
 
 ```js
-const Person = DefineMap.extend("Person", {
+const Person = DefineMap.extend( "Person", {
 	first: "string",
 	last: "string",
 	fullName: {
@@ -25,13 +25,13 @@ const Person = DefineMap.extend("Person", {
 			return this.first + " " + this.last;
 		}
 	}
-});
+} );
 
-const me = new Person({ first: "John", last: "Doe" });
-me.on("fullName", function() {});
+const me = new Person( { first: "John", last: "Doe" } );
+me.on( "fullName", function() {} );
 
 console.log(
-	debug.getDebugData(debug.getGraph(me, "fullName")),
+	debug.getDebugData( debug.getGraph( me, "fullName" ) ),
 	"whatChangesMe"
 );
 ```
