@@ -22,9 +22,9 @@ to display (in a new browser window) the dependency graph of the `fullName` prop
 of the `me` Person instance:
 
 ```js
-var debug = require("can-debug");
+import debug from "can-debug";
 
-var Person = DefineMap.extend("Person", {
+const Person = DefineMap.extend( "Person", {
 	first: "string",
 	last: "string",
 	fullName: {
@@ -32,10 +32,10 @@ var Person = DefineMap.extend("Person", {
 			return `${this.first} ${this.last}`;
 		}
 	}
-});
+} );
 
-var me = new Person({ first: "John", last: "Doe" });
-debug.drawGraph(me, "fullName");
+const me = new Person( { first: "John", last: "Doe" } );
+debug.drawGraph( me, "fullName" );
 ```
 
 Calling `debug.drawGraph` opens up a new browser window like this:

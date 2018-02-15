@@ -13,7 +13,7 @@ as "x" changes "y"; if the arrow goes in the opposite direction it can be read a
 is changed by "y" or "x" derives its value from "y".
 
 ```js
-var Person = DefineMap.extend("Person", {
+const Person = DefineMap.extend( "Person", {
 	first: "string",
 	last: "string",
 	fullName: {
@@ -21,12 +21,12 @@ var Person = DefineMap.extend("Person", {
 			return this.first + " " + this.last;
 		}
 	}
-});
+} );
 
-var me = new Person({ first: "John", last: "Doe" });
-me.on("fullName", function() {});
+const me = new Person( { first: "John", last: "Doe" } );
+me.on( "fullName", function() {} );
 
-var graph = debug.getGraph(me, "fullName");
+const graph = debug.getGraph( me, "fullName" );
 ```
 
 Using a visualization library, the graph returned in the above example looks like 

@@ -17,12 +17,12 @@ and prints out the `fullName` value in a `<h1>` element. Then it calls `logWhatI
 passing the `<input>` element reference with id "first".
 
 ```js
-var debug = require("can-debug");
-var stache = require("can-stache");
-var DefineMap = require("can-define/map/map");
-require("can-stache-bindings");
+import debug from "can-debug";
+import stache from "can-stache";
+import DefineMap from "can-define/map/map";
+require( "can-stache-bindings" );
 
-var Person = DefineMap.extend("Person", {
+const Person = DefineMap.extend( "Person", {
 	first: "string",
 	last: "string",
 	fullName: {
@@ -30,18 +30,18 @@ var Person = DefineMap.extend("Person", {
 			return `${this.first} ${this.last}`;
 		}
 	}
-});
+} );
 
-var view = stache(`
-	<h1 id="full">{{fullName}}</h1>
-	<input id="first" value:bind="first">
-	<input id="last" value:bind="last">
-`);
+const view = stache( `
+  <h1 id="full">{{fullName}}</h1>
+  <input id="first" value:bind="first">
+  <input id="last" value:bind="last">
+` );
 
-var scope = new Person({ first: "Jane", last: "Doe" });
-document.body.appendChild(view(scope));
+const scope = new Person( { first: "Jane", last: "Doe" } );
+document.body.appendChild( view( scope ) );
 
-debug.logWhatIChange(document.querySelector("#first"), "value");
+debug.logWhatIChange( document.querySelector( "#first" ), "value" );
 ```
 
 It logs the observables affected by the `value` attribute of the `<input>`
