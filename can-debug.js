@@ -20,4 +20,4 @@ module.exports = namespace.debug = {
 	logWhatChangesMe: temporarilyBind(logWhatChangesMe)
 };
 
-window.can = Proxy != null ? proxyNamespace(namespace) : namespace;
+window.can = typeof Proxy !== "undefined" ? proxyNamespace(namespace) : namespace;
