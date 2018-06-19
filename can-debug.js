@@ -21,3 +21,7 @@ module.exports = namespace.debug = {
 };
 
 window.can = typeof Proxy !== "undefined" ? proxyNamespace(namespace) : namespace;
+
+if (window.__CANJS_DEVTOOLS__) {
+    window.__CANJS_DEVTOOLS__.register(window.can);
+}
