@@ -48,7 +48,12 @@ testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if availab
 
 	var origRegister = devtools.register;
 	devtools.register = function(can) {
-		assert.equal(can, window.can, "window.can was passed to register");
+		assert.ok("Symbol" in can, "can.Symbol passed");
+		assert.ok("Reflect" in can, "can.Reflect passed");
+		assert.ok("queues" in can, "can.queues passed");
+		assert.ok("getGraph" in can, "can.getGraph passed");
+		assert.ok("formatGraph" in can, "can.formatGraph passed");
+		assert.ok("mergeDeep" in can, "can.mergeDeep passed");
 	};
 
 	clone({})
