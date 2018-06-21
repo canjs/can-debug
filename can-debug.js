@@ -1,4 +1,5 @@
 var namespace = require("can-namespace");
+var globals = require("can-globals");
 var proxyNamespace = require("./src/proxy-namespace");
 var temporarilyBind = require("./src/temporarily-bind");
 
@@ -25,15 +26,26 @@ module.exports = namespace.debug = {
 	logWhatChangesMe: temporarilyBind(logWhatChangesMe)
 };
 
-window.can = typeof Proxy !== "undefined" ? proxyNamespace(namespace) : namespace;
+var global = globals.getKeyValue("global");
 
-if (window.__CANJS_DEVTOOLS__) {
-	window.__CANJS_DEVTOOLS__.register({
-		Symbol: canSymbol,
-		Reflect: canReflect,
-		queues: canQueues,
-		getGraph: namespace.debug.getGraph,
-		formatGraph: namespace.debug.formatGraph,
-		mergeDeep: mergeDeep
+global.can = typeof Proxy !== "undefined" ? proxyNamespace(namespace) : namespace;
+
+var devtoolsCanModules = {
+	Symbol: canSymbol,
+	Reflect: canReflect,
+	queues: canQueues,
+	getGraph: namespace.debug.getGraph,
+	formatGraph: namespace.debug.formatGraph,
+	mergeDeep: mergeDeep
+};
+
+if (global.__CANJS_DEVTOOLS__) {
+	global.__CANJS_DEVTOOLS__.register(devtoolsCanModules);
+} else {
+	Object.defineProperty(global, "__CANJS_DEVTOOLS__", {
+		set: function(devtoolsGlobal) {
+			devtoolsGlobal.register(devtoolsCanModules);
+			return devtoolsGlobal;
+		}
 	});
 }
