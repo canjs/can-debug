@@ -44,22 +44,61 @@ QUnit.test("calls canReflect bind symbols safely", function(assert) {
 testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if available", function(assert) {
 	var done = assert.async();
 
-	var devtools = window.__CANJS_DEVTOOLS__ = window.__CANJS_DEVTOOLS__ || {};
-
-	var origRegister = devtools.register;
-	devtools.register = function(can) {
-		assert.ok("Symbol" in can, "can.Symbol passed");
-		assert.ok("Reflect" in can, "can.Reflect passed");
-		assert.ok("queues" in can, "can.queues passed");
-		assert.ok("getGraph" in can, "can.getGraph passed");
-		assert.ok("formatGraph" in can, "can.formatGraph passed");
-		assert.ok("mergeDeep" in can, "can.mergeDeep passed");
+	var fakeWindow = {
+		__CANJS_DEVTOOLS__: {
+			register: function(can) {
+				assert.ok("Symbol" in can, "can.Symbol passed");
+				assert.ok("Reflect" in can, "can.Reflect passed");
+				assert.ok("queues" in can, "can.queues passed");
+				assert.ok("getGraph" in can, "can.getGraph passed");
+				assert.ok("formatGraph" in can, "can.formatGraph passed");
+				assert.ok("mergeDeep" in can, "can.mergeDeep passed");
+				done();
+			}
+		}
 	};
 
-	clone({})
+	clone({
+		"can-globals": {
+			default: {
+				getKeyValue: function(key) {
+					if (key === "global") {
+						return fakeWindow;
+					}
+				}
+			}
+		}
+	})
+	.import("can-debug");
+});
+
+testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if __CANJS_DEVTOOLS__ is set later", function(assert) {
+	var done = assert.async();
+	var fakeWindow = {};
+
+	clone({
+		"can-globals": {
+			default: {
+				getKeyValue: function(key) {
+					if (key === "global") {
+						return fakeWindow;
+					}
+				}
+			}
+		}
+	})
 	.import("can-debug")
 	.then(function() {
-		devtools.register = origRegister;
-		done();
+		fakeWindow.__CANJS_DEVTOOLS__ = {
+			register: function(can) {
+				assert.ok("Symbol" in can, "can.Symbol passed");
+				assert.ok("Reflect" in can, "can.Reflect passed");
+				assert.ok("queues" in can, "can.queues passed");
+				assert.ok("getGraph" in can, "can.getGraph passed");
+				assert.ok("formatGraph" in can, "can.formatGraph passed");
+				assert.ok("mergeDeep" in can, "can.mergeDeep passed");
+				done();
+			}
+		};
 	});
 });
