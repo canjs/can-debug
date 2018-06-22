@@ -38,14 +38,19 @@ var devtoolsCanModules = {
 	formatGraph: namespace.debug.formatGraph,
 	mergeDeep: mergeDeep
 };
+var devtoolsGlobalName =  "__CANJS_DEVTOOLS__";
 
-if (global.__CANJS_DEVTOOLS__) {
-	global.__CANJS_DEVTOOLS__.register(devtoolsCanModules);
+if (global[devtoolsGlobalName]) {
+	global[devtoolsGlobalName].register(devtoolsCanModules);
 } else {
-	Object.defineProperty(global, "__CANJS_DEVTOOLS__", {
+	Object.defineProperty(global, devtoolsGlobalName, {
 		set: function(devtoolsGlobal) {
+			Object.defineProperty(global, devtoolsGlobalName, {
+				value: devtoolsGlobal
+			});
+
 			devtoolsGlobal.register(devtoolsCanModules);
-			return devtoolsGlobal;
-		}
+		},
+		configurable: true
 	});
 }
