@@ -75,6 +75,20 @@ testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if availab
 testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if __CANJS_DEVTOOLS__ is set later", function(assert) {
 	var done = assert.async();
 	var fakeWindow = {};
+	var fakeDevtoolsGlobal = {
+		register: function(can) {
+			assert.ok("Symbol" in can, "can.Symbol passed");
+			assert.ok("Reflect" in can, "can.Reflect passed");
+			assert.ok("queues" in can, "can.queues passed");
+			assert.ok("getGraph" in can, "can.getGraph passed");
+			assert.ok("formatGraph" in can, "can.formatGraph passed");
+			assert.ok("mergeDeep" in can, "can.mergeDeep passed");
+
+			assert.equal(fakeWindow.__CANJS_DEVTOOLS__, fakeDevtoolsGlobal, "sets window.__CANJS_DEVTOOLS__");
+
+			done();
+		}
+	};
 
 	clone({
 		"can-globals": {
@@ -89,16 +103,6 @@ testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if __CANJS
 	})
 	.import("can-debug")
 	.then(function() {
-		fakeWindow.__CANJS_DEVTOOLS__ = {
-			register: function(can) {
-				assert.ok("Symbol" in can, "can.Symbol passed");
-				assert.ok("Reflect" in can, "can.Reflect passed");
-				assert.ok("queues" in can, "can.queues passed");
-				assert.ok("getGraph" in can, "can.getGraph passed");
-				assert.ok("formatGraph" in can, "can.formatGraph passed");
-				assert.ok("mergeDeep" in can, "can.mergeDeep passed");
-				done();
-			}
-		};
+		fakeWindow.__CANJS_DEVTOOLS__ = fakeDevtoolsGlobal;
 	});
 });
