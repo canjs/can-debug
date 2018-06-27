@@ -1,3 +1,4 @@
+"use strict";
 var debug = require("can-debug");
 var Scope = require("can-view-scope");
 var DefineMap = require("can-define/map/map");

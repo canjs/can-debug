@@ -1,3 +1,4 @@
+"use strict";
 var debug = require("can-debug");
 var DefineMap = require("can-define/map/map");
 

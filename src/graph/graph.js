@@ -1,3 +1,4 @@
+"use strict";
 function Graph() {
 	this.nodes = [];
 	this.arrows = new Map();

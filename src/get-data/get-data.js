@@ -1,3 +1,4 @@
+"use strict";
 var labelCycles = require("../label-cycles/label-cycles");
 
 var isDisconnected = function isDisconnected(data) {
