@@ -1,3 +1,4 @@
+"use strict";
 var namespace = require("can-namespace");
 var globals = require("can-globals");
 var proxyNamespace = require("./src/proxy-namespace");

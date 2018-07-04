@@ -1,3 +1,4 @@
+"use strict";
 var warned = false;
 
 module.exports = function proxyNamespace(namespace) {

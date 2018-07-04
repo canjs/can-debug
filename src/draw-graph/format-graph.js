@@ -1,3 +1,4 @@
+"use strict";
 var canReflect = require("can-reflect");
 
 // Converts the graph into a data structure that vis.js requires to draw the graph

@@ -1,3 +1,4 @@
+"use strict";
 var debug = require("can-debug");
 var canViewModel = require("can-view-model");
 var DefineMap = require("can-define/map/map");

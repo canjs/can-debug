@@ -1,3 +1,4 @@
+"use strict";
 var formatGraph = require("./format-graph");
 var getGraph = require("../get-graph/get-graph");
 

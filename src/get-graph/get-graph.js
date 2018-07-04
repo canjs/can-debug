@@ -1,3 +1,4 @@
+"use strict";
 var Graph = require("../graph/graph");
 var makeNode = require("./make-node");
 var canReflect = require("can-reflect");

@@ -1,3 +1,4 @@
+"use strict";
 var getData = require("../get-data/get-data");
 var getGraph = require("../get-graph/get-graph");
 

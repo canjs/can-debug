@@ -1,3 +1,4 @@
+"use strict";
 var Graph = require("../graph/graph");
 
 // Returns a new graph with all the arrows not involved in a circuit

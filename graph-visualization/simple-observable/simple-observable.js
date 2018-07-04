@@ -1,3 +1,4 @@
+"use strict";
 var debug = require("can-debug");
 var Observation = require("can-observation");
 var SimpleObservable = require("can-simple-observable");

@@ -1,3 +1,4 @@
+"use strict";
 var debug = require("can-debug");
 var stache = require("can-stache");
 var DefineMap = require("can-define/map/map");
