@@ -1,8 +1,10 @@
 var QUnit = require("steal-qunit");
-var debug = require("can-debug");
+var makeDebug = require("can-debug");
 var DefineMap = require("can-define/map/map");
 var testHelpers = require("can-test-helpers");
 var clone = require("steal-clone");
+
+var debug = makeDebug();
 
 QUnit.module("can-debug");
 
@@ -69,7 +71,10 @@ testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if availab
 			}
 		}
 	})
-	.import("can-debug");
+	.import("can-debug")
+	.then(function(debug) {
+		debug();
+	});
 });
 
 testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if __CANJS_DEVTOOLS__ is set later", function(assert) {
@@ -102,6 +107,9 @@ testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if __CANJS
 		}
 	})
 	.import("can-debug")
+	.then(function(debug) {
+		debug();
+	})
 	.then(function() {
 		fakeWindow.__CANJS_DEVTOOLS__ = fakeDevtoolsGlobal;
 	});

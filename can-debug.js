@@ -17,41 +17,56 @@ var canReflect = require("can-reflect");
 var canQueues = require("can-queues");
 var mergeDeep = require("can-diff/merge-deep/merge-deep");
 
-module.exports = namespace.debug = {
-	getGraph: temporarilyBind(getGraph),
-	formatGraph: temporarilyBind(formatGraph),
-	drawGraph: temporarilyBind(drawGraph),
-	getWhatIChange: temporarilyBind(getWhatIChange),
-	getWhatChangesMe: temporarilyBind(getWhatChangesMe),
-	logWhatIChange: temporarilyBind(logWhatIChange),
-	logWhatChangesMe: temporarilyBind(logWhatChangesMe)
-};
-
 var global = globals.getKeyValue("global");
 
-global.can = typeof Proxy !== "undefined" ? proxyNamespace(namespace) : namespace;
+var devtoolsRegistrationComplete = false;
+function registerWithDevtools() {
+	if (devtoolsRegistrationComplete) {
+		return;
+	}
 
-var devtoolsCanModules = {
-	Symbol: canSymbol,
-	Reflect: canReflect,
-	queues: canQueues,
-	getGraph: namespace.debug.getGraph,
-	formatGraph: namespace.debug.formatGraph,
-	mergeDeep: mergeDeep
-};
-var devtoolsGlobalName =  "__CANJS_DEVTOOLS__";
+	var devtoolsGlobalName =  "__CANJS_DEVTOOLS__";
+	var devtoolsCanModules = {
+		Symbol: canSymbol,
+		Reflect: canReflect,
+		queues: canQueues,
+		getGraph: namespace.debug.getGraph,
+		formatGraph: namespace.debug.formatGraph,
+		mergeDeep: mergeDeep
+	};
 
-if (global[devtoolsGlobalName]) {
-	global[devtoolsGlobalName].register(devtoolsCanModules);
-} else {
-	Object.defineProperty(global, devtoolsGlobalName, {
-		set: function(devtoolsGlobal) {
-			Object.defineProperty(global, devtoolsGlobalName, {
-				value: devtoolsGlobal
-			});
+	if (global[devtoolsGlobalName]) {
+		global[devtoolsGlobalName].register(devtoolsCanModules);
+	} else {
+		Object.defineProperty(global, devtoolsGlobalName, {
+			set: function(devtoolsGlobal) {
+				Object.defineProperty(global, devtoolsGlobalName, {
+					value: devtoolsGlobal
+				});
 
-			devtoolsGlobal.register(devtoolsCanModules);
-		},
-		configurable: true
-	});
+				devtoolsGlobal.register(devtoolsCanModules);
+			},
+			configurable: true
+		});
+	}
+
+	devtoolsRegistrationComplete = true;
 }
+
+module.exports = function() {
+	namespace.debug = {
+		getGraph: temporarilyBind(getGraph),
+		formatGraph: temporarilyBind(formatGraph),
+		drawGraph: temporarilyBind(drawGraph),
+		getWhatIChange: temporarilyBind(getWhatIChange),
+		getWhatChangesMe: temporarilyBind(getWhatChangesMe),
+		logWhatIChange: temporarilyBind(logWhatIChange),
+		logWhatChangesMe: temporarilyBind(logWhatChangesMe)
+	};
+
+	registerWithDevtools();
+
+	global.can = typeof Proxy !== "undefined" ? proxyNamespace(namespace) : namespace;
+
+	return namespace.debug;
+};
