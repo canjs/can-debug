@@ -5,8 +5,7 @@ var proxyNamespace = require("./src/proxy-namespace");
 var temporarilyBind = require("./src/temporarily-bind");
 
 var getGraph = require("./src/get-graph/get-graph");
-var formatGraph = require("./src/draw-graph/format-graph");
-var drawGraph = require("./src/draw-graph/draw-graph");
+var formatGraph = require("./src/format-graph/format-graph");
 var logWhatIChange = require("./src/what-i-change/what-i-change");
 var logWhatChangesMe = require("./src/what-changes-me/what-changes-me");
 var getWhatIChange = require("./src/get-what-i-change/get-what-i-change");
@@ -17,41 +16,55 @@ var canReflect = require("can-reflect");
 var canQueues = require("can-queues");
 var mergeDeep = require("can-diff/merge-deep/merge-deep");
 
-module.exports = namespace.debug = {
-	getGraph: temporarilyBind(getGraph),
-	formatGraph: temporarilyBind(formatGraph),
-	drawGraph: temporarilyBind(drawGraph),
-	getWhatIChange: temporarilyBind(getWhatIChange),
-	getWhatChangesMe: temporarilyBind(getWhatChangesMe),
-	logWhatIChange: temporarilyBind(logWhatIChange),
-	logWhatChangesMe: temporarilyBind(logWhatChangesMe)
-};
-
 var global = globals.getKeyValue("global");
 
-global.can = typeof Proxy !== "undefined" ? proxyNamespace(namespace) : namespace;
+var devtoolsRegistrationComplete = false;
+function registerWithDevtools() {
+	if (devtoolsRegistrationComplete) {
+		return;
+	}
 
-var devtoolsCanModules = {
-	Symbol: canSymbol,
-	Reflect: canReflect,
-	queues: canQueues,
-	getGraph: namespace.debug.getGraph,
-	formatGraph: namespace.debug.formatGraph,
-	mergeDeep: mergeDeep
-};
-var devtoolsGlobalName =  "__CANJS_DEVTOOLS__";
+	var devtoolsGlobalName =  "__CANJS_DEVTOOLS__";
+	var devtoolsCanModules = {
+		Symbol: canSymbol,
+		Reflect: canReflect,
+		queues: canQueues,
+		getGraph: namespace.debug.getGraph,
+		formatGraph: namespace.debug.formatGraph,
+		mergeDeep: mergeDeep
+	};
 
-if (global[devtoolsGlobalName]) {
-	global[devtoolsGlobalName].register(devtoolsCanModules);
-} else {
-	Object.defineProperty(global, devtoolsGlobalName, {
-		set: function(devtoolsGlobal) {
-			Object.defineProperty(global, devtoolsGlobalName, {
-				value: devtoolsGlobal
-			});
+	if (global[devtoolsGlobalName]) {
+		global[devtoolsGlobalName].register(devtoolsCanModules);
+	} else {
+		Object.defineProperty(global, devtoolsGlobalName, {
+			set: function(devtoolsGlobal) {
+				Object.defineProperty(global, devtoolsGlobalName, {
+					value: devtoolsGlobal
+				});
 
-			devtoolsGlobal.register(devtoolsCanModules);
-		},
-		configurable: true
-	});
+				devtoolsGlobal.register(devtoolsCanModules);
+			},
+			configurable: true
+		});
+	}
+
+	devtoolsRegistrationComplete = true;
 }
+
+module.exports = function() {
+	namespace.debug = {
+		getGraph: temporarilyBind(getGraph),
+		formatGraph: temporarilyBind(formatGraph),
+		getWhatIChange: temporarilyBind(getWhatIChange),
+		getWhatChangesMe: temporarilyBind(getWhatChangesMe),
+		logWhatIChange: temporarilyBind(logWhatIChange),
+		logWhatChangesMe: temporarilyBind(logWhatChangesMe)
+	};
+
+	registerWithDevtools();
+
+	global.can = typeof Proxy !== "undefined" ? proxyNamespace(namespace) : namespace;
+
+	return namespace.debug;
+};

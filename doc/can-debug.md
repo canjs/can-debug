@@ -14,7 +14,6 @@ Exports an object with the following methods:
 
 ```
 {
-	drawGraph        // Draws the dependency graph in a new window
 	logWhatIChange   // Log what the observable affects
 	logWhatChangesMe // Log what affects the observable
 }
