@@ -4,7 +4,7 @@
 
 @description Get a deeply nested object from a dependency graph.
 
-@signature `debug.getDebugData(graph, [direction])`
+@signature `canDebug.getDebugData(graph, [direction])`
 
 Takes a dependency graph and generates a recursive data structure from it, this
 method is used internally by the `logWhatChanges` and `logWhatIChange` functions.
@@ -31,7 +31,7 @@ const me = new Person( { first: "John", last: "Doe" } );
 me.on( "fullName", function() {} );
 
 console.log(
-	debug.getDebugData( debug.getGraph( me, "fullName" ) ),
+	canDebug.getDebugData( canDebug.getGraph( me, "fullName" ) ),
 	"whatChangesMe"
 );
 ```

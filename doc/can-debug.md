@@ -1,16 +1,22 @@
-@module {Object} can-debug
+@module {function} can-debug
 @parent can-observables
 @collection can-ecosystem
 @alias can.debug
 
 @description Useful debugging utilities.
 
-@type {Object}
+@signature `debug()`
 
-`can-debug` provides methods that show how different parts of an application
+`can-debug` exports a function that enables debugging and provides
+methods that show how different parts of an application
 affect each other, specifically CanJS's observables and DOM nodes.
 
-Exports an object with the following methods:
+Calling this function will enable
+[CanJS Devtools](https://chrome.google.com/webstore/detail/canjs-devtools/hhdfadlgplkpapjfehnjhcebebgmibcb)
+and will also set `window.debug` to an object containing debugging
+utilities. The object is also returned.
+
+@return {Object} Returns an object with the following methods:
 
 ```
 {
@@ -23,7 +29,7 @@ Exports an object with the following methods:
 
 ## Use
 
-`can-debug` exports functions to log how observables affect each other. These
+`can-debug` provides functions to log how observables affect each other. These
 functions can be used to understand the flow of data throughout an application.
 
 The following example shows how to use the [can-debug.logWhatChangesMe] function
@@ -41,7 +47,7 @@ const Person = DefineMap.extend( "Person", {
 } );
 
 const me = new Person( { first: "John", last: "Doe" } );
-debug.logWhatChangesMe( me, "fullName" );
+canDebug.logWhatChangesMe( me, "fullName" );
 ```
 
 Which prints out the following message to the browser's console:
@@ -128,7 +134,7 @@ const template = stache( `
 const scope = new Person( { first: "Jane", last: "Doe" } );
 document.body.appendChild( template( scope ) );
 
-debug.logWhatChangeMe( document.querySelect( "#full" ) );
+canDebug.logWhatChangeMe( document.querySelect( "#full" ) );
 ```
 
 This prints out the following message:

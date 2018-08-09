@@ -4,7 +4,7 @@
 
 @description Get the observable's dependency graph.
 
-@signature `debug.getGraph(observable, [key])`
+@signature `canDebug.getGraph(observable, [key])`
 
 Returns a graph data structure where each node represents an observable and the 
 edges or arrows from node to node represent the "direction" of the dependency. If
@@ -26,7 +26,7 @@ const Person = DefineMap.extend( "Person", {
 const me = new Person( { first: "John", last: "Doe" } );
 me.on( "fullName", function() {} );
 
-const graph = debug.getGraph( me, "fullName" );
+const graph = canDebug.getGraph( me, "fullName" );
 ```
 
 Using a visualization library, the graph returned in the above example looks like 

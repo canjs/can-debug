@@ -3,7 +3,7 @@
 
 @description Log what affects an observable.
 
-@signature `debug.logWhatChangesMe(observable, [key])`
+@signature `canDebug.logWhatChangesMe(observable, [key])`
 
 Logs what affects the observable. If a `key` is provided, logs what affects the 
 `key` of the observable.
@@ -14,6 +14,8 @@ to log what affects the `fullName` property of the `me` Person instance:
 
 ```js
 import debug from "can-debug";
+
+const canDebug = debug();
 
 const Person = DefineMap.extend( "Person", {
 	first: "string",
@@ -26,7 +28,7 @@ const Person = DefineMap.extend( "Person", {
 } );
 
 const me = new Person( { first: "John", last: "Doe" } );
-debug.logWhatChangesMe( me, "fullName" );
+canDebug.logWhatChangesMe( me, "fullName" );
 ```
 
 Calling `logWhatChangesMe` prints out the following message to the browser's 
