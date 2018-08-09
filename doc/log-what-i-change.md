@@ -3,7 +3,7 @@
 
 @description Log what an observable affects.
 
-@signature `debug.logWhatIChange(observable, [key])`
+@signature `canDebug.logWhatIChange(observable, [key])`
 
 Logs what the observable affects If a `key` is provided, logs what the `key` 
 of the observable affects.
@@ -21,6 +21,8 @@ import debug from "can-debug";
 import stache from "can-stache";
 import DefineMap from "can-define/map/map";
 require( "can-stache-bindings" );
+
+const canDebug = debug();
 
 const Person = DefineMap.extend( "Person", {
 	first: "string",
@@ -41,7 +43,7 @@ const view = stache( `
 const scope = new Person( { first: "Jane", last: "Doe" } );
 document.body.appendChild( view( scope ) );
 
-debug.logWhatIChange( document.querySelector( "#first" ), "value" );
+canDebug.logWhatIChange( document.querySelector( "#first" ), "value" );
 ```
 
 It logs the observables affected by the `value` attribute of the `<input>`
