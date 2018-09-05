@@ -69,7 +69,8 @@ Graph.prototype.bfs = function bfs(visit) {
 
 	var node = graph.nodes[0];
 	var queue = [node];
-	var visited = new Map([[node, true]]);
+	var visited = new Map();
+	visited.set(node, true);
 
 	while (queue.length) {
 		node = queue.shift();
@@ -138,7 +139,8 @@ function addArrowMeta(graph, head, tail, meta) {
 		}
 		entry.set(tail, Object.assign(arrowMeta, meta));
 	} else {
-		entry = new Map([[tail, meta]]);
+		entry = new Map();
+		entry.set(tail, meta);
 		graph.arrowsMeta.set(head, entry);
 	}
 }
