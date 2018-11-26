@@ -53,8 +53,10 @@ Graph.prototype.getNeighbors = function getNeighbors(node) {
 Graph.prototype.findNode = function findNode(cb) {
 	var found = null;
 	var graph = this;
+	var i, node;
 
-	for (var node of graph.nodes) {
+	for (i=0; i<graph.nodes.length; i++) {
+		node = graph.nodes[i];
 		if (cb(node)) {
 			found = node;
 			break;
