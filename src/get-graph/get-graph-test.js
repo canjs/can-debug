@@ -17,9 +17,12 @@ QUnit.test("works with 'whatChangesMe' dependencies", function(assert) {
 	var b = {};
 	var ab = {};
 
+	var valueDependencies = new Set();
+	valueDependencies.add(a);
+	valueDependencies.add(b);
 	ab[getValueDependenciesSymbol] = function() {
 		return {
-			valueDependencies: new Set([a, b])
+			valueDependencies: valueDependencies
 		};
 	};
 
@@ -48,10 +51,12 @@ QUnit.test("works with 'whatIChange' dependencies", function(assert) {
 	var b = {};
 	var ab = {};
 
+	var valueDependencies = new Set();
+	valueDependencies.add(ab);
 	var changeAb = function() {
 		return {
 			mutate: {
-				valueDependencies: new Set([ab])
+				valueDependencies: valueDependencies
 			}
 		};
 	};
@@ -89,12 +94,16 @@ QUnit.test("works with two way dependencies", function(assert) {
 	var b = function b() {};
 
 	// "a" derives its value from "b"
+	var aValueDependencies = new Set();
+	aValueDependencies.add(b);
 	a[getValueDependenciesSymbol] = function getValueDependencies() {
-		return { valueDependencies: new Set([b]) };
+		return { valueDependencies: aValueDependencies };
 	};
 
+	var bValueDependencies = new Set();
+	bValueDependencies.add(a);
 	b[getValueDependenciesSymbol] = function getValueDependencies() {
-		return { valueDependencies: new Set([a]) };
+		return { valueDependencies: bValueDependencies };
 	};
 
 	// a <-> b

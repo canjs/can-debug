@@ -10,9 +10,12 @@ QUnit.test("it works", function(assert) {
 	var b = {};
 	var ab = {};
 
+	var valueDependencies = new Set();
+	valueDependencies.add(a);
+	valueDependencies.add(b);
 	ab[getValueDependenciesSymbol] = function() {
 		return {
-			valueDependencies: new Set([a, b])
+			valueDependencies: valueDependencies
 		};
 	};
 
