@@ -71,8 +71,15 @@ QUnit.test("getNeighbors", function(assert) {
 	g.addArrow(one, three);
 	g.addArrow(two, three);
 
-	assert.deepEqual(g.getNeighbors(one), new Set([two, three]));
-	assert.deepEqual(g.getNeighbors(two), new Set([three]));
+	var oneNeighbors = new Set();
+	oneNeighbors.add(two);
+	oneNeighbors.add(three);
+	assert.deepEqual(g.getNeighbors(one), oneNeighbors);
+
+	var twoNeighbors = new Set();
+	twoNeighbors.add(three);
+	assert.deepEqual(g.getNeighbors(two), twoNeighbors);
+
 	assert.deepEqual(g.getNeighbors(three), new Set());
 });
 

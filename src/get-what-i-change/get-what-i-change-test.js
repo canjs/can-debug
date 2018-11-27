@@ -10,10 +10,12 @@ QUnit.test("it works", function(assert) {
 	var b = {};
 	var ab = {};
 
+	var valueDependencies = new Set();
+	valueDependencies.add(ab);
 	var changeAb = function() {
 		return {
 			mutate: {
-				valueDependencies: new Set([ab])
+				valueDependencies: valueDependencies
 			}
 		};
 	};
