@@ -1,4 +1,6 @@
 "use strict";
+var canAssign = require("can-assign");
+
 function Graph() {
 	this.nodes = [];
 	this.arrows = new Map();
@@ -139,7 +141,7 @@ function addArrowMeta(graph, head, tail, meta) {
 		if (!arrowMeta) {
 			arrowMeta = {};
 		}
-		entry.set(tail, Object.assign(arrowMeta, meta));
+		entry.set(tail, canAssign(arrowMeta, meta));
 	} else {
 		entry = new Map();
 		entry.set(tail, meta);
