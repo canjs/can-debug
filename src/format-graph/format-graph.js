@@ -1,5 +1,6 @@
 "use strict";
 var canReflect = require("can-reflect");
+var canAssign = require("can-assign");
 
 // Converts the graph into a data structure that vis.js requires to draw the graph
 module.exports = function formatGraph(graph) {
@@ -47,7 +48,7 @@ module.exports = function formatGraph(graph) {
 					var meta = graph.arrowsMeta.get(node).get(neighbor);
 
 					arrowsDataSet.push(
-						Object.assign(
+						canAssign(
 							{ from: headId, to: tailId },
 							getArrowData(meta)
 						)
