@@ -7,7 +7,7 @@ module.exports = function formatGraph(graph) {
 	// { [node]: Number }
 	var nodeIdMap = new Map();
 	graph.nodes.forEach(function(node, index) {
-		Map.set(node, index + 1);
+		nodeIdMap.set(node, index + 1);
 	});
 
 	// collects nodes in the shape of { id: Number, label: String }
