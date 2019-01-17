@@ -49,12 +49,13 @@ testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if availab
 	var fakeWindow = {
 		__CANJS_DEVTOOLS__: {
 			register: function(can) {
-				assert.ok("Symbol" in can, "can.Symbol passed");
+				assert.ok("Observation" in can, "can.Observation passed");
 				assert.ok("Reflect" in can, "can.Reflect passed");
-				assert.ok("queues" in can, "can.queues passed");
+				assert.ok("Symbol" in can, "can.Symbol passed");
 				assert.ok("getGraph" in can, "can.getGraph passed");
 				assert.ok("formatGraph" in can, "can.formatGraph passed");
 				assert.ok("mergeDeep" in can, "can.mergeDeep passed");
+				assert.ok("queues" in can, "can.queues passed");
 				done();
 			}
 		}
@@ -82,12 +83,13 @@ testHelpers.dev.devOnlyTest("calls window.__CANJS_DEVTOOLS__.register if __CANJS
 	var fakeWindow = {};
 	var fakeDevtoolsGlobal = {
 		register: function(can) {
-			assert.ok("Symbol" in can, "can.Symbol passed");
+			assert.ok("Observation" in can, "can.Observation passed");
 			assert.ok("Reflect" in can, "can.Reflect passed");
-			assert.ok("queues" in can, "can.queues passed");
+			assert.ok("Symbol" in can, "can.Symbol passed");
 			assert.ok("getGraph" in can, "can.getGraph passed");
 			assert.ok("formatGraph" in can, "can.formatGraph passed");
 			assert.ok("mergeDeep" in can, "can.mergeDeep passed");
+			assert.ok("queues" in can, "can.queues passed");
 
 			assert.equal(fakeWindow.__CANJS_DEVTOOLS__, fakeDevtoolsGlobal, "sets window.__CANJS_DEVTOOLS__");
 
