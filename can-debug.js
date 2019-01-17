@@ -11,6 +11,7 @@ var logWhatChangesMe = require("./src/what-changes-me/what-changes-me");
 var getWhatIChange = require("./src/get-what-i-change/get-what-i-change");
 var getWhatChangesMe = require("./src/get-what-changes-me/get-what-changes-me");
 
+var Observation = require("can-observation");
 var canSymbol = require("can-symbol");
 var canReflect = require("can-reflect");
 var canQueues = require("can-queues");
@@ -26,12 +27,13 @@ function registerWithDevtools() {
 
 	var devtoolsGlobalName =  "__CANJS_DEVTOOLS__";
 	var devtoolsCanModules = {
-		Symbol: canSymbol,
+		Observation: Observation,
 		Reflect: canReflect,
-		queues: canQueues,
-		getGraph: namespace.debug.getGraph,
+		Symbol: canSymbol,
 		formatGraph: namespace.debug.formatGraph,
-		mergeDeep: mergeDeep
+		getGraph: namespace.debug.getGraph,
+		mergeDeep: mergeDeep,
+		queues: canQueues
 	};
 
 	if (global[devtoolsGlobalName]) {
@@ -54,8 +56,8 @@ function registerWithDevtools() {
 
 module.exports = function() {
 	namespace.debug = {
-		getGraph: temporarilyBind(getGraph),
 		formatGraph: temporarilyBind(formatGraph),
+		getGraph: temporarilyBind(getGraph),
 		getWhatIChange: temporarilyBind(getWhatIChange),
 		getWhatChangesMe: temporarilyBind(getWhatChangesMe),
 		logWhatIChange: temporarilyBind(logWhatIChange),

@@ -42,6 +42,7 @@
     "can-diff": "^1.0.0",
     "can-globals": "^1.0.0",
     "can-namespace": "1.0.0",
+    "can-observation": "^4.0.0",
     "can-queues": "^1.0.0",
     "can-reflect": "^1.10.1",
     "can-reflect-dependencies": "<2.0.0",
@@ -49,7 +50,6 @@
   },
   "devDependencies": {
     "can-define": "^2.0.0",
-    "can-observation": "^4.0.0",
     "can-simple-observable": "^2.0.0",
     "can-stache": "^4.0.0",
     "can-stache-bindings": "^4.0.0",
