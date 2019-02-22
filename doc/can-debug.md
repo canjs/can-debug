@@ -2,6 +2,7 @@
 @parent can-observables
 @collection can-ecosystem
 @alias can.debug
+@package ../package.json
 
 @description Useful debugging utilities.
 
