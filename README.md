@@ -1,32 +1,26 @@
 # can-debug
 
-[![Build Status](https://travis-ci.org/canjs/can-debug.svg?branch=master)](https://travis-ci.org/canjs/can-debug)
+[![Join our Slack](https://img.shields.io/badge/slack-join%20chat-611f69.svg)](https://www.bitovi.com/community/slack?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join our Discourse](https://img.shields.io/discourse/https/forums.bitovi.com/posts.svg)](https://forums.bitovi.com/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/canjs/can-debug/blob/master/LICENSE)
+[![npm version](https://badge.fury.io/js/can-debug.svg)](https://www.npmjs.com/package/can-debug)
+[![Travis build status](https://travis-ci.org/canjs/can-debug.svg?branch=master)](https://travis-ci.org/canjs/can-debug)
+[![Greenkeeper badge](https://badges.greenkeeper.io/canjs/can-debug.svg)](https://greenkeeper.io/)
 
 CanJS Debugger
 
-## Usage
+## Documentation
 
-### ES6 use
+Read the [can-debug API docs on CanJS.com](https://canjs.com/doc/can-debug.html).
 
-With StealJS, you can import this module directly in a template that is autorendered:
+## Changelog
 
-```js
-import plugin from "can-debug";
-```
+See the [latest releases on GitHub](https://github.com/canjs/can-debug/releases).
 
-### CommonJS use
+## Contributing
 
-Use `require` to load `can-debug` and everything else
-needed to create a template that uses `can-debug`:
+The [contribution guide](https://github.com/canjs/can-debug/blob/master/CONTRIBUTING.md) has information on getting help, reporting bugs, developing locally, and more.
 
-```js
-import plugin from "can-debug";
-```
+## License
 
-### Standalone use
-
-Load the `global` version of the plugin:
-
-```html
-<script src='./node_modules/can-debug/dist/global/can-debug.js'></script>
-```
+[MIT](https://github.com/canjs/can-debug/blob/master/LICENSE)
