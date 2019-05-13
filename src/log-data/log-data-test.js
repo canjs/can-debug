@@ -30,7 +30,7 @@ QUnit.test("it works", function(assert) {
 		groups.add(label);
 		consoleGroup.apply(console, arguments);
 	};
-	QUnit.log(data);
+	log(data);
 
 	// groups dependencies by "kind"
 	assert.ok(groups.has("DERIVED FROM"));
