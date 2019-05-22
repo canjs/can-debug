@@ -44,7 +44,7 @@
     "can-namespace": "1.0.0",
     "can-observation": "^4.0.0",
     "can-queues": "^1.0.0",
-    "can-reflect": "^1.10.1",
+    "can-reflect": "^1.17.10",
     "can-reflect-dependencies": "<2.0.0",
     "can-symbol": "^1.0.0"
   },
