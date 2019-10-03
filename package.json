@@ -51,7 +51,7 @@
   "devDependencies": {
     "can-define": "^2.0.0",
     "can-simple-observable": "^2.0.0",
-    "can-stache": "^4.0.0",
+    "can-stache": "^5.0.0",
     "can-stache-bindings": "^4.0.0",
     "can-test-helpers": "^1.1.2",
     "can-view-model": "^4.0.0",
